@@ -1,0 +1,12 @@
+.carrossel {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.5rem;
+  width: 70%;
+  max-width: 450px;
+  text-align: center;
+}

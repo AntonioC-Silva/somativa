@@ -1,0 +1,74 @@
+@import url('https://fonts.googleapis.com/css2?family=Iceland&display=swap');
+
+body {
+  font-family: 'Iceland',semi-bold;
+  font-style: semi-bold;
+  background: linear-gradient(to top right, #0C38C9, #8D0B99);
+}
+
+h1 {
+  color: white;
+  text-align: center;
+  margin-top: 20%;
+  font-size: 80px;
+  text-shadow: 
+        2px 2px 3px rgba(0, 0, 0, 0.5),
+        0px 0px 0px rgba(255, 255, 255, 0.5);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+
+.textoRecortado span {
+            color: transparent; 
+            text-shadow: 
+                0px 0px 0px rgba(255, 255, 255, 0.4), 
+                -1px -1px 3px rgba(255, 255, 255, 0.2), 
+                1px 1px 3px rgba(0, 0, 0, 0.4), 
+                2px 2px 5px rgba(0, 0, 0, 0.2);
+            
+            
+            display: inline-block;
+            position: relative;
+            
+            
+            opacity: 0;
+            animation: surgir 0.5s ease-out forwards;
+            transition: color 0.3s ease-in 0.5s, text-shadow 0.3s ease-in 0.5s;
+        }
+
+
+@keyframes surgir {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.8); 
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+
+        .textoRecortado span:nth-child(1) {
+            animation-delay: 0.4s;
+        }
+        .textoRecortado span:nth-child(2) {
+            animation-delay: 0.6s;
+        }
+        .textoRecortado span:nth-child(3) {
+            animation-delay: 0.8s;
+        }
+        .textoRecortado span:nth-child(4) {
+            animation-delay: 1.0s;
+        }
+
+.textoRecortado.finalizado span {
+    color: white;
+    text-shadow: none;
+    text-shadow: 
+        0px 0px 0px rgba(255, 255, 255, 0.4), 
+        -1px -1px 3px rgba(255, 255, 255, 0.2), 
+        1px 1px 3px rgba(0, 0, 0, 0.4), 
+        2px 2px 5px rgba(0, 0, 0, 0.2);
+}

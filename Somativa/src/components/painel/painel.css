@@ -1,0 +1,13 @@
+/* Arquivo: componentes/PainelInfo/PainelInfo.css */
+.painel {
+  background: linear-gradient(to top right, #0C38C9, #8D0B99);
+  width: 100%;
+  height: 100vh;
+  transition: width 1.5s cubic-bezier(0.77, 0, 0.175, 1);
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-family: Arial, sans-serif;
+}
