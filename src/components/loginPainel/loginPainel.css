@@ -30,6 +30,8 @@
   font-size: 0.9rem;
   margin-bottom: 5px;
   color: #aaa;
+  margin-right: 400px;
+  white-space: nowrap;
 }
 
 .loginForm input {
@@ -73,3 +75,4 @@
   font-weight: bold;
   text-decoration: none;
 }
+

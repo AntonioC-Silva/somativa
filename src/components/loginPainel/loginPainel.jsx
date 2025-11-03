@@ -1,5 +1,6 @@
 import React from 'react';
 import './loginPainel.css';
+import { Link } from 'react-router-dom';
 
 function PainelLogin() {
   return (
@@ -19,7 +20,7 @@ function PainelLogin() {
         <button type="submit" className="enterBotao">Entrar</button>
         
         <p className="link">
-          Não tem conta? <a href="#">Cadastre-se</a>
+          Não tem conta? <Link to="/cadastro">Cadastre-se</Link>
         </p>
       </form> 
 

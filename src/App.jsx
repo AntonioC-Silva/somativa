@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import './App.css'
-import Intro from './components/intro/intro'
-import PaginaLogin from './pages/login/login'
-import Painel from './components/painel/painel'
+import PaginaLogin from '../src/pages/login/login'
+import PaginaCadastro from './pages/cadastro/cadastro'
 
 function App() {
 
@@ -13,6 +12,7 @@ function App() {
     <>
       
        <PaginaLogin/>
+       <PaginaCadastro/>
     </>
   )
 }

@@ -10,3 +10,12 @@
   max-width: 450px;
   text-align: center;
 }
+
+.carrossel p {
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.carrossel p.fade{
+  opacity: 0;
+}

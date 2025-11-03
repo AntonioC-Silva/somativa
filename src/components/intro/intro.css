@@ -1,21 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=Iceland&display=swap');
 
-body {
-  font-family: 'Iceland',semi-bold;
-  font-style: semi-bold;
-  background: linear-gradient(to top right, #0C38C9, #8D0B99);
-}
 
 h1 {
   color: white;
   text-align: center;
-  margin-top: 20%;
   font-size: 80px;
+  font-family: 'Iceland', sans-serif;
   text-shadow: 
         2px 2px 3px rgba(0, 0, 0, 0.5),
         0px 0px 0px rgba(255, 255, 255, 0.5);
   -webkit-background-clip: text;
   background-clip: text;
+  margin-bottom: 150px;
 }
 
 

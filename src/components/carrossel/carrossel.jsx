@@ -3,24 +3,34 @@ import './carrosel.css';
 
 const textos = [
   "Os lançamento e novidades do cinema direto na sua TELA",
-  "Milhares de filmes e séries para você assistir.",
+  "Milhares de filmes para você assistir.",
   "Crie sua conta e comece agora mesmo."
 ];
 
 function Carrossel() {
   const [indice, setIndice] = useState(0);
+  const [fade, setFade] = useState(false);
 
   useEffect(() => {
     const idIntervalo = setInterval(() => {
-      setIndice((indiceAtual) => (indiceAtual + 1) % textos.length);
-    }, 4000); 
+
+      setFade(true);
+
+      setTimeout(() => {
+        setIndice((indiceAtual) => (indiceAtual + 1) % textos.length);
+        setFade(false);
+        
+      },500); 
+
+      
+    },4000); 
 
     return () => clearInterval(idIntervalo);
   }, []);
 
   return (
     <div className="carrossel">
-      <p>{textos[indice]}</p>
+      <p className={fade?'fade':''}>{textos[indice]}</p>
     </div>
   );
 }
