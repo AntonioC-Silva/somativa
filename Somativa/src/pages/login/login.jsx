@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import Painel from "../components/painel/painel.jsx";
-import PainelLogin from "../components/loginPainel/loginPainel.jsx";
-import './PaginaLogin.css';
+import Painel from "../../components/painel/painel.jsx";
+import PainelLogin from "../../components/loginPainel/loginPainel.jsx";
+import './login.css';
 
 function PaginaLogin() {
   const [loginAtivo, setloginAtivo] = useState(false);

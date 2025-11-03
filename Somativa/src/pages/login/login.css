@@ -9,7 +9,7 @@
 
 
 .autenticacao.loginAtivo .painel {
-  width: 50%;
+  flex-basis: 50%;
 }
 
 .autenticacao.loginAtivo .loginPainel {
