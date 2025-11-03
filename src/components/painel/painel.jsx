@@ -4,11 +4,12 @@ import Carrossel from '../carrossel/carrossel'
 
 import './painel.css';
 
-function Painel({ terminouIntro }) {
+
+function Painel({ terminouIntro, pularIntro= true, showCarrossel = true }) {
   return (
     <aside className="painel">
-      <Intro terminouIntro={terminouIntro} />
-      <Carrossel/>
+      <Intro terminouIntro={terminouIntro} pularIntro={pularIntro} />
+      {showCarrossel && <Carrossel/>}
 
     </aside> 
   );

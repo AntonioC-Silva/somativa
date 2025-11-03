@@ -1,19 +1,8 @@
-
-
 .autenticacao {
   display: flex;
   overflow: hidden;
   height: 100vh;
   background-color: #000;
-}
-
-
-.autenticacao.loginAtivo .painel {
-  flex-basis: 50%;
-}
-
-.autenticacao.loginAtivo .loginPainel {
-  transform: translateX(0);
 }
 
 .autenticacao .textoRecortado {
@@ -24,15 +13,38 @@
   transition: all 1.5s cubic-bezier(0.77, 0, 0.175, 1);
 }
 
-.autenticacao.loginAtivo .textoRecortado {
+.autenticacao.cadastroAtivo .textoRecortado {
   top: 40px;
-  left: 40px;
+  left: auto;
+  right: 40px;
   transform: translate(0, 0) scale(0.6);
   color: white;
   text-shadow: none;
 }
 
-.autenticacao.loginAtivo .carrossel {
+.autenticacao.cadastroPage .painel {
+  flex-basis: 100%;
+  order: 2;
+  transition: flex-basis 1.5s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.autenticacao.cadastroPage .loginPainel {
+  flex-basis: 0%;
+  order: 1;
+  transform: translateX(-100%);
+  transition: all 1.5s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.autenticacao.cadastroAtivo.cadastroPage .painel {
+  flex-basis: 50%;
+}
+
+.autenticacao.cadastroAtivo.cadastroPage .loginPainel {
+  flex-basis: 50%;
+  transform: translateX(0);
+}
+
+.autenticacao.cadastroAtivo .carrossel {
   opacity: 1;
-  transition-delay: 1.5s;
+  transition-delay: 1.5s; 
 }

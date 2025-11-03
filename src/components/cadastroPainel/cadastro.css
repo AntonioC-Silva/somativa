@@ -4,8 +4,6 @@
   width: 50%;
   height: 100vh;
   background-color: #000;
-  transform: translateX(100%);
-  transition: transform 1.5s cubic-bezier(0.77, 0, 0.175, 1);
   flex-shrink: 0; 
   color: white;
   display: flex;
@@ -74,4 +72,5 @@
   font-weight: bold;
   text-decoration: none;
 }
+
 

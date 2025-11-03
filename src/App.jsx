@@ -1,19 +1,15 @@
-import { useState } from 'react'
 import './App.css'
+import { Routes, Route } from 'react-router-dom' 
 import PaginaLogin from '../src/pages/login/login'
 import PaginaCadastro from './pages/cadastro/cadastro'
 
 function App() {
-
-  const handle = () => {
-    console.log("intro terminou")
-  }
   return (
-    <>
-      
-       <PaginaLogin/>
-       <PaginaCadastro/>
-    </>
+    // 2. Defina suas rotas aqui
+    <Routes>
+      <Route path="/" element={<PaginaLogin />} />
+      <Route path="/cadastro" element={<PaginaCadastro />} />
+    </Routes>
   )
 }
 

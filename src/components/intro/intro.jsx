@@ -1,9 +1,22 @@
 import React, { useEffect } from 'react';
 import './intro.css';
 
-function Intro({ terminouIntro }) { 
+
+function Intro({ terminouIntro, pularIntro = true }) { 
   
   useEffect(() => {
+    const h1 = document.querySelector('.textoRecortado');
+    if (!h1) return;
+
+    if (!pularIntro) {
+      h1.classList.add('finalizado'); 
+      if (terminouIntro) {
+        terminouIntro(); 
+      }
+      return;
+    }
+
+
     const ultimaLetra = 1.0;
     const duracaoAnimacao = 1.0;
     const tempoTotalAnimacao = (ultimaLetra + duracaoAnimacao) * 1000;

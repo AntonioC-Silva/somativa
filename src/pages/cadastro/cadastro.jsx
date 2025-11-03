@@ -1,25 +1,31 @@
-import React, { useState } from 'react';
-import Intro from '../../components/intro/intro.jsx';
+import React, { useState, useEffect } from 'react';
+import Painel from '../../components/painel/painel.jsx'; // Importamos o Painel
 import CadastroPainel from "../../components/cadastroPainel/cadastro.jsx";
-import '../login/login.css';
+import './cadastro.css'; // Importamos o NOVO CSS de cadastro
 
 function PaginaCadastro() {
-  const [loginAtivo, setloginAtivo] = useState(false);
+  const [cadastroAtivo, setCadastroAtivo] = useState(false);
 
-  // Esta função é chamada quando a animação da intro termina
   const terminouIntro = () => {
-    setTimeout(() => {
-      setloginAtivo(true);
-    }, 1000); 
+    setCadastroAtivo(true);
   };
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setCadastroAtivo(true);
+    }, 100); 
+    
+    return () => clearTimeout(timer);
+  }, []); 
+
   return (
-    <main className={`autenticacao ${loginAtivo ? 'loginAtivo' : ''}`}>
+    
+    <main className={`autenticacao cadastroPage ${cadastroAtivo ? 'cadastroAtivo' : ''}`}>
+      
       
       <CadastroPainel />
-      <Intro/>
+      <Painel terminouIntro={terminouIntro} pularIntro={false} showCarrossel={true}/>
       
-
     </main>
   );
 }
