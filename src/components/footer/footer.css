@@ -1,0 +1,122 @@
+@import url('https://fonts.googleapis.com/css2?family=Iceland&display=swap');
+
+
+.footer {
+    background-color: #000000; 
+    color: #ffffff; 
+    padding: 30px 50px 15px 50px;
+    
+    display: grid;
+    grid-template-columns: 200px auto 1fr;
+    grid-template-rows: auto auto; 
+    grid-template-areas: 
+        "links social logo"
+        "copyright copyright copyright";
+        
+    align-items: start;
+}
+
+.links {
+    grid-area: links;
+}
+
+.links h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+    border-bottom: 2px solid #CD39E7;
+    padding-bottom: 5px;
+}
+
+.links ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.links ul li a {
+    color: #cccccc;
+    text-decoration: none;
+    display: block;
+    padding: 5px 0;
+    transition: color 0.3s ease;
+}
+
+.links ul li a:hover {
+    color: #CD39E7;
+}
+
+
+.social {
+    grid-area: social;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-left: 50px;
+}
+
+.social h3 {
+    margin: 0 0 10px 0;
+    font-size: 1.1em;
+    border-bottom: 2px solid #CD39E7;
+    padding-bottom: 5px;
+}
+
+.icones {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex; 
+    gap: 20px; 
+}
+
+.icones li a {
+    color: #cccccc;
+    text-decoration: none;
+    display: flex; 
+    align-items: center;
+    transition: color 0.3s ease;
+}
+
+.icones li a i {
+    color: #CD39E7; 
+    font-size: 1.2em; 
+    margin-right: 8px;
+    transition: color 0.3s ease;
+}
+
+.icones li a:hover {
+    color: #ffffff; 
+}
+
+.icones li a:hover i {
+    color: #ffffff; 
+}
+
+
+
+.logoFooter {
+    grid-area: logo;
+    justify-self: end; 
+    align-self: center; 
+    font-family: 'Iceland', Arial, Helvetica, sans-serif;
+    font-size: 8rem; 
+    font-weight: bold;
+    margin: 0;
+    margin-right: 120px;
+    background-image: linear-gradient(to right, #0C38C9, #8D0B99); 
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+
+}
+
+.copyright {
+    grid-area: copyright;
+    text-align: center;
+    border-top: 1px solid #333; 
+    padding-top: 15px;
+    margin-top: 15px;
+    font-size: 0.9em;
+}
