@@ -1,6 +1,7 @@
 .secaoFilmes {
-    margin-bottom: 40px;
-    padding: 0 60px; /* Espaço lateral para as setas não ficarem em cima do primeiro/último filme */
+    margin: 20px 0 40px 0;
+    margin-top: 0;
+    padding: 0 60px;
     position: relative;
 }
 
@@ -10,47 +11,65 @@
     font-weight: 700;
     margin-bottom: 20px;
     margin-top: 0;
-    padding-left: 10px; /* Alinha com o padding interno dos cards */
+    padding-top: 50px;
+    padding-left: 0;
     font-family: Arial, Helvetica, sans-serif;
 }
 
-/* --- Estilização das Setas do Carrossel --- */
-
-/* Garante que as setas fiquem visíveis acima dos cards */
-.secaoFilmes .slick-prev,
-.secaoFilmes .slick-next {
-    z-index: 5;
-    width: 50px;
-    height: 100%; /* Altura total da seção para facilitar o clique */
-    opacity: 0; /* Começa invisível */
-    transition: all 0.3s ease;
+.secaoFilmes .slick-slider {
+    position: static;
 }
 
-/* Mostra as setas quando o mouse está sobre a seção */
-.secaoFilmes:hover .slick-prev,
-.secaoFilmes:hover .slick-next {
+/* --- Estilização das Setas Personalizadas (BLINDADA) --- */
+
+.setaPersonalizada {
+    position: absolute !important;
+    top: 50% !important;             /* Posiciona o topo da seta exatamente no meio do container */
+    transform: translateY(-50%) !important; /* Puxa a seta 50% da sua própria altura para cima, centralizando perfeitamente */
+    z-index: 10;
+    width: 60px;
+    height: 60px; /* Definimos uma altura fixa para evitar que ela tente ocupar 100% e cause bugs */
+    cursor: pointer;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
     opacity: 1;
+    color: #fff;
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    transition: color 0.2s ease, transform 0.2s ease; /* Adicionamos transform na transição */
 }
 
-/* Posicionamento e fundo degradê para as setas (estilo Netflix) */
-.secaoFilmes .slick-prev {
-    left: 0;
-    background: linear-gradient(to right, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+/* Feedback visual no hover - Mantém a centralização e adiciona escala */
+.setaPersonalizada:hover {
+    color: #CD39E7;
+    transform: translateY(-50%) scale(1.2) !important; 
 }
 
-.secaoFilmes .slick-next {
-    right: 0;
-    background: linear-gradient(to left, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+/* Feedback visual no clique - Mantém a centralização e reseta a escala */
+.setaPersonalizada:active {
+    transform: translateY(-50%) scale(1.0) !important;
 }
 
-/* Aumenta o tamanho dos ícones das setas padrão do slick */
-.secaoFilmes .slick-prev:before,
-.secaoFilmes .slick-next:before {
-    font-size: 30px;
-    opacity: 0.75;
+/* Posicionamento fixo nas laterais */
+.setaAnterior {
+    left: 0 !important;
 }
 
-.secaoFilmes .slick-prev:hover:before,
-.secaoFilmes .slick-next:hover:before {
-    opacity: 1;
+.setaProxima {
+    right: 0 !important;
+}
+
+/* Estilo do ícone */
+.setaPersonalizada i {
+    font-size: 3rem;
+    font-weight: bold;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    pointer-events: none; 
+}
+
+.slick-prev:before,
+.slick-next:before {
+    display: none;
 }
