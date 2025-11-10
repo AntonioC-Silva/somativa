@@ -1,0 +1,34 @@
+.cardFilme {
+    padding: 10px; /* Espaço entre os cards no carrossel */
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+.cardFilme:hover {
+    transform: scale(1.05); /* Efeito de "pop" igual Netflix */
+}
+
+.poster {
+    margin: 0;
+    width: 100%;
+    position: relative;
+}
+
+.imagemCapa {
+    width: 100%;
+    aspect-ratio: 2/3; /* Mantém proporção de poster padrão */
+    object-fit: cover;
+    border-radius: 4px;
+    display: block; /* Remove espaços fantasmas abaixo da imagem */
+}
+
+.tituloFilme {
+    margin-top: 8px;
+    color: #e5e5e5;
+    font-size: 0.9rem;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Adiciona "..." se o nome for muito longo */
+    text-align: center; /* Conforme seu pedido para ficar embaixo centralizado */
+}

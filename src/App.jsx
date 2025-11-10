@@ -6,12 +6,14 @@ import Footer from './components/footer/footer'
 import CarrosselHome from './components/carrosselHome/carrosselHome'
 import Filtros from './components/filtros/filtros'
 import NavBar from './components/navBar/navBar'
+import PaginaHome from './pages/home/home'
+import CardFilme from './components/cardFilme/cardFilme'
 
 function App() {
   return (
-    // 2. Defina suas rotas aqui
+
     <>
-      </>
+      <PaginaHome/>
     </>
   )
 }

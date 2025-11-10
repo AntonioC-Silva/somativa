@@ -1,0 +1,56 @@
+.secaoFilmes {
+    margin-bottom: 40px;
+    padding: 0 60px; /* Espaço lateral para as setas não ficarem em cima do primeiro/último filme */
+    position: relative;
+}
+
+.tituloSecao {
+    color: #e5e5e5;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    margin-top: 0;
+    padding-left: 10px; /* Alinha com o padding interno dos cards */
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* --- Estilização das Setas do Carrossel --- */
+
+/* Garante que as setas fiquem visíveis acima dos cards */
+.secaoFilmes .slick-prev,
+.secaoFilmes .slick-next {
+    z-index: 5;
+    width: 50px;
+    height: 100%; /* Altura total da seção para facilitar o clique */
+    opacity: 0; /* Começa invisível */
+    transition: all 0.3s ease;
+}
+
+/* Mostra as setas quando o mouse está sobre a seção */
+.secaoFilmes:hover .slick-prev,
+.secaoFilmes:hover .slick-next {
+    opacity: 1;
+}
+
+/* Posicionamento e fundo degradê para as setas (estilo Netflix) */
+.secaoFilmes .slick-prev {
+    left: 0;
+    background: linear-gradient(to right, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+}
+
+.secaoFilmes .slick-next {
+    right: 0;
+    background: linear-gradient(to left, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+}
+
+/* Aumenta o tamanho dos ícones das setas padrão do slick */
+.secaoFilmes .slick-prev:before,
+.secaoFilmes .slick-next:before {
+    font-size: 30px;
+    opacity: 0.75;
+}
+
+.secaoFilmes .slick-prev:hover:before,
+.secaoFilmes .slick-next:hover:before {
+    opacity: 1;
+}
