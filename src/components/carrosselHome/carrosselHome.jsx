@@ -9,23 +9,23 @@ import 'slick-carousel/slick/slick-theme.css';
 function CarrosselHome() {
     
     const filmesEmDestaque = [
-        {
+ {
             id: 1,
             titulo: "Coringa: Delírio a Dois",
             descricao: "Arthur Fleck está internado em Arkham, aguardando julgamento por seus crimes como o Coringa. Enquanto lida com sua dupla identidade, ele não só se depara com o amor verdadeiro, mas encontra a música que sempre esteve dentro de si.",
-            urlImagem: "https://ingresso-a.akamaihd.net/prd/img/movie/coringa-delirio-a-dois/759db388-74d0-406e-a533-9a66704e0a70.webp"
+            urlImagem: "https://www.cineflexx.com.br/wp-content/uploads/2024/09/Banner-J.png"
         },
         {
             id: 2,
-            titulo: "Filme 2 de Ação",
-            descricao: "Uma equipe de elite deve se infiltrar em uma base inimiga para desarmar um dispositivo que ameaça a segurança global.",
-            urlImagem: "caminho_para_sua_imagem_de_fundo_2.jpg"
+            titulo: "Your Name",
+            descricao: "Mitsuha e Taki são dois estranhos que vivem vidas completamente diferentes. Mas quando eles trocam de corpo misteriosamente, surge uma conexão que transcende tempo e espaço.",
+            urlImagem: "https://i.pinimg.com/736x/fe/55/7d/fe557da0c62397779ad60bd102348287.jpg"
         },
         {
             id: 3,
-            titulo: "Série 3 de Drama",
-            descricao: "A vida de uma jovem médica muda drasticamente quando ela descobre um segredo de família há muito enterrado.",
-            urlImagem: "caminho_para_sua_imagem_de_fundo_3.jpg"
+            titulo: "Tropa de Elite",
+            descricao: "Nascimento, capitão da Tropa de Elite do Rio de Janeiro, é designado para chefiar uma das equipes que tem como missão apaziguar o Morro do Turano. Ele precisa encontrar um substituto enquanto tenta derrubar o tráfico de drogas e criminosos.",
+            urlImagem: "https://image.tmdb.org/t/p/original/nNUFlXdj8JIV6HnjVS58r0qCvE7.jpg"
         },
     ];
 

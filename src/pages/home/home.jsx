@@ -25,8 +25,8 @@ function PaginaHome() {
             <NavBar />
             <CarrosselHome />
             
-            {/* Aqui começam as suas listas horizontais */}
-            <main>
+
+            <main className='home'>
                 
                 <ListaFilmes 
                     tituloSecao="Destaques da Semana" 
