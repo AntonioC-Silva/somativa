@@ -15,7 +15,6 @@ function CarrosselHome() {
             descricao: "Arthur Fleck está internado em Arkham, aguardando julgamento por seus crimes como o Coringa. Enquanto lida com sua dupla identidade, ele não só se depara com o amor verdadeiro, mas encontra a música que sempre esteve dentro de si.",
             urlImagem: "https://ingresso-a.akamaihd.net/prd/img/movie/coringa-delirio-a-dois/759db388-74d0-406e-a533-9a66704e0a70.webp"
         },
-        // Adicione aqui mais 2 ou mais filmes
         {
             id: 2,
             titulo: "Filme 2 de Ação",
