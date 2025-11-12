@@ -1,0 +1,126 @@
+/* Fundo preto e layout geral do formulário (como no login) */
+.formularioFilme {
+  width: 100%;
+  max-width: 1100px; 
+  margin: 40px auto; 
+  padding: 2rem 3rem; 
+  background-color: #000; /* Igual ao loginPainel */
+  border-radius: 8px;
+  color: #ffffff;
+}
+
+.grupoCampos {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Título com a cor de destaque roxa e borda */
+.tituloFormulario {
+  font-family: 'Iceland', sans-serif;
+  font-size: 2.2rem;
+  font-weight: bold;
+  color: #CD39E7; /* Sua cor de destaque */
+  text-align: center;
+  margin-bottom: 2.5rem;
+  padding-bottom: 0.5rem;
+  width: 100%;
+  border-bottom: 2px solid #CD39E7; /* Borda de destaque (como no footer) */
+}
+
+/* O container da grade de 2 colunas */
+.containerGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; 
+  gap: 1.5rem 2rem; 
+  margin-bottom: 1.5rem; 
+}
+
+/* Contêiner para cada coluna */
+.colunaFormulario {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; 
+}
+
+/* Rótulos (ex: "Título do Filme") */
+.rotulo {
+  display: block; 
+  font-size: 0.9rem;
+  margin-bottom: 5px;
+  color: #aaa; /* Cor dos rótulos do login */
+  text-align: left; 
+}
+
+/* Estilo unificado para <input> (igual ao login) */
+.campo {
+  width: 100%;
+  padding: 12px 15px;
+  background-color: #000;
+  border: 1px solid #aaa;
+  border-radius: 20px; /* Seu border-radius padrão */
+  color: white;
+  font-size: 1rem;
+  box-sizing: border-box; 
+}
+
+/* Estilo para <textarea> (Sinopse) */
+.campoArea {
+  width: 100%;
+  padding: 12px 15px;
+  background-color: #000;
+  border: 1px solid #aaa;
+  border-radius: 20px; /* Seu border-radius padrão */
+  color: white;
+  font-size: 1rem;
+  box-sizing: border-box;
+  font-family: inherit; 
+  min-height: 140px; 
+  resize: vertical; 
+  margin-bottom: 1.5rem; 
+}
+
+/* Remove as setas do input[type=number] */
+.campo[type="number"]::-webkit-inner-spin-button,
+.campo[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.campo[type="number"] {
+  -moz-appearance: textfield; 
+}
+
+/* Foco acessível (cor ciano dos filtros) */
+.campo:focus-visible,
+.campoArea:focus-visible {
+  outline: none;
+  border-color: #00d8ff;
+  box-shadow: 0 0 5px #00d8ff;
+}
+
+/* Cor do texto do placeholder */
+.campo::placeholder,
+.campoArea::placeholder {
+  color: #888;
+}
+
+/* Botão de envio (gradiente do login) */
+.botaoEnvio {
+  background: linear-gradient(to right, #0C38C9, #8D0B99); /* Seu gradiente */
+  border: none;
+  border-radius: 20px; /* Seu border-radius padrão */
+  padding: 16px; 
+  color: white;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 20px; 
+  width: 100%; 
+  transition: opacity 0.3s ease;
+}
+
+.botaoEnvio:hover,
+.botaoEnvio:focus-visible {
+  opacity: 0.9;
+  outline: none;
+}

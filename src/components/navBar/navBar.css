@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Iceland&display=swap');
 
-
-
+/* ... (Seus estilos .navBar, .logoNav, .campoBusca, .menuNav existentes) ... */
+/* Certifique-se que eles ainda estão aqui em cima */
 
 .navBar {
     background-color: black;
@@ -17,9 +17,7 @@
     padding: 0 20px; 
     z-index: 1000;   
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
 }
-
 
 .logoNav {
     font-size: 4rem;
@@ -27,12 +25,10 @@
     color: white;
     margin-right: 40px;
     font-family: 'Iceland', Arial, Helvetica, sans-serif;
-
 }
 .logoNav:hover{
     color: #CD39E7;
 }
-
 
 .campoBusca {
     margin-left: auto;
@@ -62,9 +58,13 @@
     display: flex;
     width: 30px;
     height: 31px;
-
 }
 
+/* Ícone de busca dentro do botão */
+.iconeBusca span {
+    font-size: 1.0rem;
+    line-height: 1; /* Garante alinhamento */
+}
 
 .menuNav ul {
     display: flex;
@@ -89,4 +89,87 @@
 
 .menuNav a:hover {
     color: #CD39E7; 
+}
+
+
+/* --- NOVOS ESTILOS PARA O MENU DE USUÁRIO --- */
+
+/* 1. O container <nav> do menu do usuário */
+.menuUsuario {
+    position: relative; /* O dropdown será posicionado relativo a ele */
+    margin-left: 15px;
+    margin-right: 40px;
+}
+
+/* 2. O <button> que parece um ícone */
+.botaoMenuUsuario {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    font-size: 2.2rem; /* Tamanho do ícone */
+    color: white; /* Cor padrão */
+    transition: color 0.3s ease, opacity 0.3s ease;
+    line-height: 1; /* Alinha o ícone */
+}
+
+.botaoMenuUsuario:hover {
+    opacity: 0.8;
+}
+
+/* 3. Estilo de foco acessível para o botão */
+.botaoMenuUsuario:focus-visible {
+    outline: 2px solid #00d8ff;
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+/* 4. As cores condicionais */
+.icon-comum {
+    color: #00d8ff; /* Azul Ciano */
+}
+.icon-adm {
+    color: #cd39e7; /* Roxo/Rosa */
+}
+
+/* 5. O menu dropdown (a tag <ul>) */
+.dropdownConteudo {
+    display: none; /* Escondido por padrão */
+    position: absolute;
+    right: 0; /* Alinhado à direita */
+    top: 100%; /* Abaixo do botão */
+    background-color: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 8px;
+    min-width: 180px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    z-index: 1001;
+    padding: 0.5rem 0;
+    margin: 8px 0 0 0; /* Espaço do topo e zera os outros */
+    list-style: none; /* Remove as "bolinhas" do <ul> */
+}
+
+/* 6. A classe que o React adiciona para MOSTRAR o menu */
+.dropdownConteudo.aberto {
+    display: block;
+}
+
+/* 7. Os links <a> dentro da lista <ul> */
+.dropdownConteudo a {
+    color: #ffffff;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block; /* Ocupa todo o espaço do <li> */
+    text-align: left;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+/* 8. Efeito hover e foco acessível nos links */
+.dropdownConteudo a:hover,
+.dropdownConteudo a:focus-visible {
+    background-color: #333;
+    color: #cd39e7;
+    outline: none; /* O foco já é visível pelo background */
 }

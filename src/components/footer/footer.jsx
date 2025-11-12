@@ -24,7 +24,7 @@ function Footer() {
                         </a>
                     </li>
                     <li>
-                        <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer"> 
+                        <a href="https://www.linkedin.com/in/ant%C3%B4nio-rodrigues-6419922b7/" target="_blank" rel="noopener noreferrer"> 
                             <i className="bi bi-linkedin"></i> LinkedIn 
                         </a>
                     </li>
