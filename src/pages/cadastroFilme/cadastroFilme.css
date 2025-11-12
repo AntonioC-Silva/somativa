@@ -1,10 +1,9 @@
-/* Fundo preto e layout geral do formulário (como no login) */
 .formularioFilme {
   width: 100%;
   max-width: 1100px; 
   margin: 40px auto; 
   padding: 2rem 3rem; 
-  background-color: #000; /* Igual ao loginPainel */
+  background-color: #000;
   border-radius: 8px;
   color: #ffffff;
 }
@@ -15,20 +14,18 @@
   margin: 0;
 }
 
-/* Título com a cor de destaque roxa e borda */
 .tituloFormulario {
   font-family: 'Iceland', sans-serif;
   font-size: 2.2rem;
   font-weight: bold;
-  color: #CD39E7; /* Sua cor de destaque */
+  color: #CD39E7;
   text-align: center;
   margin-bottom: 2.5rem;
   padding-bottom: 0.5rem;
   width: 100%;
-  border-bottom: 2px solid #CD39E7; /* Borda de destaque (como no footer) */
+  border-bottom: 2px solid #CD39E7;
 }
 
-/* O container da grade de 2 colunas */
 .containerGrid {
   display: grid;
   grid-template-columns: 1fr 1fr; 
@@ -36,41 +33,53 @@
   margin-bottom: 1.5rem; 
 }
 
-/* Contêiner para cada coluna */
+@media (max-width: 768px) {
+  .containerGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .colunaFormulario {
   display: flex;
   flex-direction: column;
   gap: 1.5rem; 
 }
 
-/* Rótulos (ex: "Título do Filme") */
 .rotulo {
   display: block; 
   font-size: 0.9rem;
   margin-bottom: 5px;
-  color: #aaa; /* Cor dos rótulos do login */
+  color: #aaa;
   text-align: left; 
 }
 
-/* Estilo unificado para <input> (igual ao login) */
 .campo {
   width: 100%;
   padding: 12px 15px;
   background-color: #000;
   border: 1px solid #aaa;
-  border-radius: 20px; /* Seu border-radius padrão */
+  border-radius: 20px;
   color: white;
   font-size: 1rem;
   box-sizing: border-box; 
+  color-scheme: dark;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: none;
 }
 
-/* Estilo para <textarea> (Sinopse) */
+.campo option {
+  background-color: #111;
+  color: #eee;
+}
+
 .campoArea {
   width: 100%;
   padding: 12px 15px;
   background-color: #000;
   border: 1px solid #aaa;
-  border-radius: 20px; /* Seu border-radius padrão */
+  border-radius: 20px;
   color: white;
   font-size: 1rem;
   box-sizing: border-box;
@@ -80,7 +89,7 @@
   margin-bottom: 1.5rem; 
 }
 
-/* Remove as setas do input[type=number] */
+
 .campo[type="number"]::-webkit-inner-spin-button,
 .campo[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
@@ -90,7 +99,6 @@
   -moz-appearance: textfield; 
 }
 
-/* Foco acessível (cor ciano dos filtros) */
 .campo:focus-visible,
 .campoArea:focus-visible {
   outline: none;
@@ -98,17 +106,15 @@
   box-shadow: 0 0 5px #00d8ff;
 }
 
-/* Cor do texto do placeholder */
 .campo::placeholder,
 .campoArea::placeholder {
   color: #888;
 }
 
-/* Botão de envio (gradiente do login) */
 .botaoEnvio {
-  background: linear-gradient(to right, #0C38C9, #8D0B99); /* Seu gradiente */
+  background: linear-gradient(to right, #0C38C9, #8D0B99);
   border: none;
-  border-radius: 20px; /* Seu border-radius padrão */
+  border-radius: 20px;
   padding: 16px; 
   color: white;
   font-size: 1.1rem;
@@ -123,4 +129,67 @@
 .botaoEnvio:focus-visible {
   opacity: 0.9;
   outline: none;
+}
+
+.custom-select-container {
+  position: relative;
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+.custom-select-value {
+  padding: 12px 15px;
+  background-color: #000;
+  border: 1px solid #aaa;
+  border-radius: 20px;
+  color: white;
+  font-size: 1rem;
+  box-sizing: border-box; 
+  cursor: pointer;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="gray" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  background-size: 1.2em;
+  padding-right: 2.5rem;
+}
+
+.custom-select-value.placeholder {
+  color: #888;
+}
+
+.custom-select-value:focus-visible {
+  outline: none;
+  border-color: #00d8ff;
+  box-shadow: 0 0 5px #00d8ff;
+}
+
+.custom-select-options {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  right: 0;
+  background-color: #1a1a1a;
+  border: 1px solid #aaa;
+  border-radius: 20px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 100;
+  padding: 5px;
+}
+
+.custom-select-option {
+  padding: 12px 15px;
+  color: #eee;
+  cursor: pointer;
+  border-radius: 15px;
+}
+
+.custom-select-option:hover {
+  background-color: #333;
+}
+
+.custom-select-option.selected {
+  background-color: #CD39E7;
+  color: white;
+  font-weight: bold;
 }
