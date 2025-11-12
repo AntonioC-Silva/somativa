@@ -1,64 +1,96 @@
-import React, { useState } from 'react'; // 1. Importe o useState
+import React, { useState } from 'react';
 import '../loginPainel/loginPainel.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
-function CadastroPainel() {
-
+function PainelCadastro() {
   const [usuario, setUsuario] = useState('');
   const [senha, setSenha] = useState('');
   const [confirmarSenha, setConfirmarSenha] = useState('');
   const [erro, setErro] = useState(''); 
+  const [loading, setLoading] = useState(false);
+  const navegar = useNavigate();
 
- 
-  const envio = (event) => {
-    event.preventDefault();
+  const lidarComEnvio = async (evento) => {
+    evento.preventDefault();
     setErro(''); 
-
 
     if (senha !== confirmarSenha) {
       setErro('As senhas não são iguais.');
       return; 
     }
 
- 
-    // regras para criar a senha (n sei como vai ficar isso n banco depois)
-    // (?=.*[a-z]) - Pelo menos uma letra minúscula
-    // (?=.*[A-Z]) - Pelo menos uma letra maiúscula
-    // (?=.*\d) - Pelo menos um número
-    // (?=.*[!@#$%^&*-]) - Pelo menos um caractere especial
-    // .{8,} - Pelo menos 8 caracteres no total
     const regexSenha = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*-]).{8,}$/;
-
     if (!regexSenha.test(senha)) {
-      setErro('A senha não atende aos requisitos. verifique se a pelo menos uma letra maiuscula e minuscula, 8 caracteres e um caracter especial!');
+      setErro('Senha: 8+ chars, maiúscula, minúscula, número e especial.');
       return;
     }
 
-    console.log('senha ok!', { usuario, senha });
-    alert('Cadastro realizado com sucesso!');
+    setLoading(true);
+    try {
+      const resposta = await fetch('http://localhost:8000/api/registro', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ usuario, senha })
+      });
+
+      const dados = await resposta.json();
+
+      if (resposta.ok && dados.sucesso) {
+        alert('Cadastro realizado com sucesso! Faça o login.');
+        navegar('/'); 
+      } else {
+        setErro(dados.erro || 'Erro desconhecido');
+      }
+    } catch (err) {
+      setErro('Erro de conexão. O servidor Python está rodando?');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <section className="loginPainel">
-
-      <form className="loginForm" onSubmit={envio}>
+      <form className="loginForm" onSubmit={lidarComEnvio}>
         <h2>Cadastro</h2>
 
         <label htmlFor="usuario">Usuário:</label>
-        <input type="text" id="usuario" name="usuario" placeholder="EX: Antônio123" value={usuario} 
-        onChange={(e) => setUsuario(e.target.value)} required/>
+        <input 
+          type="text" 
+          id="usuario" 
+          name="usuario" 
+          placeholder="EX: Antônio123" 
+          value={usuario} 
+          onChange={(e) => setUsuario(e.target.value)} 
+          required
+        />
 
         <label htmlFor="senha">Senha:</label>
-        <input type="password" id="senha" name="senha" placeholder="EX: A1b345@4"value={senha}
-          onChange={(e) => setSenha(e.target.value)} required/>
+        <input 
+          type="password" 
+          id="senha" 
+          name="senha" 
+          placeholder="EX: A1b345@4"
+          value={senha}
+          onChange={(e) => setSenha(e.target.value)} 
+          required
+        />
 
         <label htmlFor="confirmarSenha">Confirmar Senha:</label>
-        <input type="password" id="confirmarSenha" name="confirmarSenha" placeholder="Confirmar Senha" value={confirmarSenha} 
-          onChange={(e) => setConfirmarSenha(e.target.value)} required/>
+        <input 
+          type="password" 
+          id="confirmarSenha" 
+          name="confirmarSenha" 
+          placeholder="Confirmar Senha" 
+          value={confirmarSenha} 
+          onChange={(e) => setConfirmarSenha(e.target.value)} 
+          required
+        />
 
         {erro && <p className="formErro">{erro}</p>}
 
-        <button type="submit" className="enterBotao">Entrar</button>
+        <button type="submit" className="enterBotao" disabled={loading}>
+          {loading ? 'Cadastrando...' : 'Cadastrar'}
+        </button>
 
         <p className="link">Já tem conta? <Link to="/">Faça Login</Link></p>
       </form>
@@ -66,4 +98,4 @@ function CadastroPainel() {
   );
 }
 
-export default CadastroPainel;
+export default PainelCadastro;

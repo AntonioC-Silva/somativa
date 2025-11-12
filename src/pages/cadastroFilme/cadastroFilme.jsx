@@ -7,45 +7,43 @@ const generosDisponiveis = [
   'Terror', 'Romance', 'Suspense', 'Animação', 'Fantasia'
 ];
 
-function CustomSelect({ options, value, onChange, placeholder }) {
-  const [isOpen, setIsOpen] = useState(false);
+function SelecaoCustomizada({ opcoes, valor, aoMudar, placeholder }) {
+  const [estaAberto, setEstaAberto] = useState(false);
+  const lidarComClique = () => setEstaAberto(!estaAberto);
 
-  const handleToggle = () => setIsOpen(!isOpen);
-
-  const handleOptionClick = (optionValue) => {
-    const isSelected = value.includes(optionValue);
-    if (isSelected) {
-      onChange(value.filter(v => v !== optionValue));
+  const lidarCliqueOpcao = (valorOpcao) => {
+    const estaSelecionado = valor.includes(valorOpcao);
+    if (estaSelecionado) {
+      aoMudar(valor.filter(v => v !== valorOpcao));
     } else {
-      onChange([...value, optionValue]);
+      aoMudar([...valor, valorOpcao]);
     }
   };
 
-  const getDisplayText = () => {
-    if (value.length === 0) return placeholder;
-    if (value.length === 1) return value[0];
-    return `${value.length} gêneros selecionados`;
+  const obterTextoExibido = () => {
+    if (valor.length === 0) return placeholder;
+    if (valor.length === 1) return valor[0];
+    return `${valor.length} gêneros selecionados`;
   };
 
   return (
-    <div className="custom-select-container">
+    <div className="containerSelecaoCustom">
       <div 
-        className={`custom-select-value ${value.length === 0 ? 'placeholder' : ''}`}
-        onClick={handleToggle}
+        className={`valorSelecaoCustom ${valor.length === 0 ? 'placeholder' : ''}`}
+        onClick={lidarComClique}
         tabIndex={0}
       >
-        {getDisplayText()}
+        {obterTextoExibido()}
       </div>
-
-      {isOpen && (
-        <div className="custom-select-options">
-          {options.map((option) => (
+      {estaAberto && (
+        <div className="opcoesSelecaoCustom">
+          {opcoes.map((opcao) => (
             <div 
-              key={option}
-              className={`custom-select-option ${value.includes(option) ? 'selected' : ''}`}
-              onClick={() => handleOptionClick(option)}
+              key={opcao}
+              className={`opcaoSelecaoCustom ${valor.includes(opcao) ? 'selecionado' : ''}`}
+              onClick={() => lidarCliqueOpcao(opcao)}
             >
-              {option}
+              {opcao}
             </div>
           ))}
         </div>
@@ -63,44 +61,81 @@ function CadastroFilme() {
   const [produtora, setProdutora] = useState('');
   const [posterUrl, setPosterUrl] = useState('');
   const [elenco, setElenco] = useState('');
-  const [selectedGeneros, setSelectedGeneros] = useState([]);
+  const [generosSelecionados, setGenerosSelecionados] = useState([]);
   const [sinopse, setSinopse] = useState('');
+  
+  const [mensagem, setMensagem] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const lidarComEnvio = (evento) => {
+  const lidarComEnvio = async (evento) => {
     evento.preventDefault();
+    setLoading(true);
+    setMensagem('');
 
     const [horas = '0', minutos = '0', segundos = '0'] = duracao.split(':');
     const totalSegundos = (parseInt(horas, 10) * 3600) +
                          (parseInt(minutos, 10) * 60) +
                          (parseInt(segundos, 10));
 
-    if (selectedGeneros.length === 0) {
-      console.error("Por favor, selecione pelo menos um gênero.");
+    if (generosSelecionados.length === 0) {
+      setMensagem('Erro: Por favor, selecione pelo menos um gênero.');
+      setLoading(false);
       return; 
     }
 
     const dadosFilme = {
-      titulo,
+      titulo: titulo,
       orcamento: parseFloat(orcamento),
       nomeDiretor: diretor,
       tempoDeDuracao: totalSegundos,
       ano: parseInt(ano, 10),
       elenco: elenco,
-      genero: selectedGeneros.join(', '),
+      genero: generosSelecionados.join(', '), 
       nomeProdutora: produtora,
       poster: posterUrl,
       sinopse: sinopse,
     };
 
-    console.log('Dados prontos para envio:', dadosFilme);
+    try {
+      const resposta = await fetch('http://localhost:8000/api/filmes', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dadosFilme),
+      });
+
+      const resultado = await resposta.json();
+
+      if (resposta.ok && resultado.sucesso) {
+        setMensagem('Filme cadastrado com sucesso!');
+        setTitulo('');
+        setOrcamento('');
+        setDiretor('');
+        setDuracao('');
+        setAno('');
+        setProdutora('');
+        setPosterUrl('');
+        setElenco('');
+        setGenerosSelecionados([]);
+        setSinopse('');
+      } else {
+        setMensagem(`Erro ao cadastrar: ${resultado.erro || 'Erro desconhecido'}`);
+      }
+    } catch (erro) {
+      console.error("Erro de rede:", erro);
+      setMensagem('Erro de conexão. O servidor Python está rodando?');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <> 
-      <NavBar/>
+      <NavBar tipoUsuario="adm" /> 
 
       <form className="formularioFilme" onSubmit={lidarComEnvio}>
-        <fieldset className="grupoCampos">
+        <fieldset className="grupoCampos" disabled={loading}>
           <legend className="tituloFormulario">Cadastrar Novo Filme</legend>
 
           <section className="containerGrid">
@@ -116,7 +151,6 @@ function CadastroFilme() {
                 onChange={(e) => setTitulo(e.target.value)}
                 required 
               />
-
               <label htmlFor="diretor" className="rotulo">Diretor:</label>
               <input 
                 type="text" 
@@ -127,7 +161,6 @@ function CadastroFilme() {
                 onChange={(e) => setDiretor(e.target.value)}
                 required
               />
-
               <label htmlFor="duracao" className="rotulo">Duração (HH:MM:SS):</label>
               <input 
                 type="time" 
@@ -152,7 +185,6 @@ function CadastroFilme() {
                 onChange={(e) => setOrcamento(e.target.value)}
                 required
               />
-
               <label htmlFor="ano" className="rotulo">Ano de Lançamento:</label>
               <input 
                 type="number" 
@@ -165,7 +197,6 @@ function CadastroFilme() {
                 onChange={(e) => setAno(e.target.value)}
                 required
               />
-
               <label htmlFor="produtora" className="rotulo">Produtora:</label>
               <input 
                 type="text" 
@@ -189,7 +220,6 @@ function CadastroFilme() {
             onChange={(e) => setPosterUrl(e.target.value)}
             required
           />
-
           <label htmlFor="elenco" className="rotulo">Elenco (separado por vírgula):</label>
           <input 
             type="text" 
@@ -200,15 +230,13 @@ function CadastroFilme() {
             onChange={(e) => setElenco(e.target.value)}
             required
           />
-
           <label htmlFor="genero" className="rotulo">Gênero:</label>
-          <CustomSelect
-            options={generosDisponiveis}
-            value={selectedGeneros}
-            onChange={setSelectedGeneros}
+          <SelecaoCustomizada
+            opcoes={generosDisponiveis}
+            valor={generosSelecionados}
+            aoMudar={setGenerosSelecionados}
             placeholder="Selecione os gêneros..."
           />
-
           <label htmlFor="sinopse" className="rotulo">Sinopse:</label>
           <textarea 
             id="sinopse" 
@@ -219,8 +247,22 @@ function CadastroFilme() {
             required
           ></textarea>
           
-          <button type="submit" className="botaoEnvio">
-            Enviar Pedido de Cadastro
+          {mensagem && (
+            <div 
+              className="mensagemFormulario" 
+              style={{
+                color: mensagem.startsWith('Erro') ? '#ff6b6b' : '#51cf66',
+                textAlign: 'center',
+                marginBottom: '1rem',
+                fontSize: '1rem'
+              }}
+            >
+              {mensagem}
+            </div>
+          )}
+
+          <button type="submit" className="botaoEnvio" disabled={loading}>
+            {loading ? 'Enviando...' : 'Enviar Pedido de Cadastro'}
           </button>
         </fieldset>
       </form>

@@ -1,9 +1,13 @@
-
 .navegacaoFiltros {
-  margin-top: 50px;
+  margin-top: 60px; /* Espaço para o NavBar fixo */
   background-color: #000000;
   padding: 1rem 2rem;
   border-bottom: 2px solid #333;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
 }
 
 .listaFiltros {
@@ -25,13 +29,13 @@
   color: #ffffff;
   cursor: pointer;
   font-weight: 600;
-  padding: 0.2;
+  padding: 0.5rem 0.8rem;
   border: 2px solid transparent;
   border-radius: 4px;
   transition: all 0.3s ease;
   list-style: none;
-  white-space: nowrap; /* Evita que o texto do botão quebre linha */
-  user-select: none; /* Melhora a experiência ao clicar rápido */
+  white-space: nowrap;
+  user-select: none;
 }
 
 .sumarioFiltro::-webkit-details-marker {
@@ -60,13 +64,14 @@ details[open] .sumarioFiltro::after {
 .conteudoInput {
   position: absolute;
   top: 120%;
-  left: 0;
+  left: 50%; /* Centraliza o dropdown */
+  transform: translateX(-50%); /* Centraliza o dropdown */
   background-color: #1a1a1a;
   border: 1px solid #333;
   padding: 1rem;
   border-radius: 8px;
   min-width: 250px;
-  z-index: 100; /* Aumentado para garantir que fique acima de outros elementos */
+  z-index: 100; 
   box-shadow: 0 4px 15px rgba(0,0,0,0.5);
   display: flex;
   flex-direction: column;
@@ -82,7 +87,6 @@ details[open] .sumarioFiltro::after {
   margin-bottom: 0.8rem;
   font-weight: bold;
   display: block;
-  
 }
 
 .rotuloOpcao,
@@ -117,4 +121,35 @@ details[open] .sumarioFiltro::after {
 .rotuloOpcao input[type="checkbox"]:focus-visible {
   outline: 2px solid #00d8ff;
   outline-offset: 2px;
+}
+
+/* CSS para a barra de busca movida */
+.campoBuscaFiltro {
+  position: relative;
+  min-width: 300px;
+}
+
+.campoBuscaFiltro input[type='search'] {
+  padding: 10px 15px;
+  padding-right: 40px; /* Espaço para o ícone */
+  border: 2px solid #555;
+  border-radius: 20px;
+  min-width: 300px;
+  background-color: #1a1a1a;
+  color: white;
+  font-size: 1rem;
+}
+
+.campoBuscaFiltro input[type='search']:focus {
+  outline: none;
+  border-color: #00d8ff;
+}
+
+.iconeBuscaFiltro {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #aaa;
+  font-size: 1.2rem;
 }

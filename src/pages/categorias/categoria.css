@@ -1,0 +1,28 @@
+.paginaCategoria {
+    background-color: #141414;
+    min-height: 100vh;
+}
+
+.containerCategoria {
+    padding: 40px 60px;
+    min-height: 70vh;
+}
+
+.gradeFilmes {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 20px;
+}
+
+.mensagemErro {
+    color: #ff6b6b;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+.mensagemCarregando,
+.mensagemVazio {
+    color: #ffffff;
+    font-size: 1.2rem;
+    text-align: center;
+}

@@ -1,28 +1,58 @@
-import React, { useState } from 'react';
-import './Filtros.css';
-import NavBar from '../navBar/navBar';
+import React, { useState, useEffect } from 'react';
+import './filtros.css'; 
 
-const Filtros = () => {
+const generosDisponiveis = [
+  'Ação', 'Aventura', 'Comédia', 'Drama', 'Ficção Científica',
+  'Terror', 'Romance', 'Suspense', 'Animação', 'Fantasia'
+];
+
+function Filtros({ aoMudarBusca, aoMudarFiltro }) {
   const [ano, setAno] = useState('');
-  // Estado que guarda qual filtro está aberto no momento (ex: 'genero', 'ano' ou null)
   const [filtroAberto, setFiltroAberto] = useState(null);
+  const [termoBusca, setTermoBusca] = useState('');
+
+  useEffect(() => {
+    const idTimer = setTimeout(() => {
+      if (aoMudarBusca) {
+        aoMudarBusca(termoBusca);
+      }
+    }, 500);
+
+    return () => {
+      clearTimeout(idTimer);
+    };
+  }, [termoBusca, aoMudarBusca]);
 
   const manipularMudancaAno = (e) => {
-    const novoValor = e.target.value.replace(/\D/g, ''); // Apenas números
+    const novoValor = e.target.value.replace(/\D/g, ''); 
     setAno(novoValor);
   };
 
-  // Função que alterna a visibilidade. Se clicar no que já está aberto, ele fecha (null).
   const alternarFiltro = (e, nomeFiltro) => {
-    e.preventDefault(); // Impede o comportamento nativo do navegador para o React controlar tudo
+    e.preventDefault(); 
     setFiltroAberto(filtroAberto === nomeFiltro ? null : nomeFiltro);
+  };
+
+  const lidarMudancaBusca = (e) => {
+    setTermoBusca(e.target.value);
   };
 
   return (
     <nav className="navegacaoFiltros" aria-label="Filtros de pesquisa">
+      
+      <div className="campoBuscaFiltro">
+        <input 
+          type='search' 
+          placeholder='Buscar por título...' 
+          aria-label="Buscar por título"
+          value={termoBusca}
+          onChange={lidarMudancaBusca}
+        />
+        <i className="bi bi-search iconeBuscaFiltro" aria-hidden="true"></i>
+      </div>
+
       <ul className="listaFiltros">
         
-        {/* --- Filtro: Gênero --- */}
         <li className="itemFiltro">
           <details className="detalhesFiltro" open={filtroAberto === 'genero'}>
             <summary className="sumarioFiltro" onClick={(e) => alternarFiltro(e, 'genero')}>
@@ -30,15 +60,15 @@ const Filtros = () => {
             </summary>
             <fieldset className="grupoOpcoes">
               <label className="legendaVisivel">Selecione os gêneros:</label>
-              <label className="rotuloOpcao"><input type="checkbox" name="genero" value="acao" /> Ação</label>
-              <label className="rotuloOpcao"><input type="checkbox" name="genero" value="comedia" /> Comédia</label>
-              <label className="rotuloOpcao"><input type="checkbox" name="genero" value="drama" /> Drama</label>
-              <label className="rotuloOpcao"><input type="checkbox" name="genero" value="ficcao" /> Ficção Científica</label>
+              {generosDisponiveis.map(genero => (
+                 <label key={genero} className="rotuloOpcao">
+                   <input type="checkbox" name="genero" value={genero} /> {genero}
+                 </label>
+              ))}
             </fieldset>
           </details>
         </li>
 
-        {/* --- Filtro: Ano --- */}
         <li className="itemFiltro">
           <details className="detalhesFiltro" open={filtroAberto === 'ano'}>
             <summary className="sumarioFiltro" onClick={(e) => alternarFiltro(e, 'ano')}>
@@ -56,45 +86,6 @@ const Filtros = () => {
                 placeholder="Ex: 2024" 
                 inputMode="numeric" 
               />
-            </div>
-          </details>
-        </li>
-
-        {/* --- Filtro: Diretor --- */}
-        <li className="itemFiltro">
-          <details className="detalhesFiltro" open={filtroAberto === 'diretor'}>
-            <summary className="sumarioFiltro" onClick={(e) => alternarFiltro(e, 'diretor')}>
-              Diretor
-            </summary>
-            <div className="conteudoInput">
-              <label htmlFor="filtroDiretor" className="rotuloInput">Nome do diretor:</label>
-              <input type="text" id="filtroDiretor" className="campoTexto" placeholder="Ex: Tarantino" />
-            </div>
-          </details>
-        </li>
-
-        {/* --- Filtro: Ator/Atriz --- */}
-        <li className="itemFiltro">
-          <details className="detalhesFiltro" open={filtroAberto === 'ator'}>
-            <summary className="sumarioFiltro" onClick={(e) => alternarFiltro(e, 'ator')}>
-              Ator/Atriz
-            </summary>
-            <div className="conteudoInput">
-              <label htmlFor="filtroAtor" className="rotuloInput">Nome do ator/atriz:</label>
-              <input type="text" id="filtroAtor" className="campoTexto" placeholder="Ex: Fernanda Montenegro" />
-            </div>
-          </details>
-        </li>
-
-         {/* --- Filtro: País --- */}
-         <li className="itemFiltro">
-          <details className="detalhesFiltro" open={filtroAberto === 'pais'}>
-            <summary className="sumarioFiltro" onClick={(e) => alternarFiltro(e, 'pais')}>
-              País
-            </summary>
-            <div className="conteudoInput">
-              <label htmlFor="filtroPais" className="rotuloInput">Nome do país de origem:</label>
-              <input type="text" id="filtroPais" className="campoTexto" placeholder="Ex: Brasil" />
             </div>
           </details>
         </li>

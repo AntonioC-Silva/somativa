@@ -131,13 +131,13 @@
   outline: none;
 }
 
-.custom-select-container {
+.containerSelecaoCustom {
   position: relative;
   width: 100%;
   margin-bottom: 1.5rem;
 }
 
-.custom-select-value {
+.valorSelecaoCustom {
   padding: 12px 15px;
   background-color: #000;
   border: 1px solid #aaa;
@@ -153,17 +153,17 @@
   padding-right: 2.5rem;
 }
 
-.custom-select-value.placeholder {
+.valorSelecaoCustom.placeholder {
   color: #888;
 }
 
-.custom-select-value:focus-visible {
+.valorSelecaoCustom:focus-visible {
   outline: none;
   border-color: #00d8ff;
   box-shadow: 0 0 5px #00d8ff;
 }
 
-.custom-select-options {
+.opcoesSelecaoCustom {
   position: absolute;
   top: calc(100% + 5px);
   left: 0;
@@ -177,19 +177,26 @@
   padding: 5px;
 }
 
-.custom-select-option {
+.opcaoSelecaoCustom {
   padding: 12px 15px;
   color: #eee;
   cursor: pointer;
   border-radius: 15px;
 }
 
-.custom-select-option:hover {
+.opcaoSelecaoCustom:hover {
   background-color: #333;
 }
 
-.custom-select-option.selected {
+.opcaoSelecaoCustom.selecionado {
   background-color: #CD39E7;
   color: white;
+  font-weight: bold;
+}
+
+.mensagemFormulario {
+  text-align: center;
+  margin-bottom: 1rem;
+  font-size: 1rem;
   font-weight: bold;
 }
