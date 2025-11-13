@@ -17,7 +17,7 @@ function App() {
       <Route path="/cadastro" element={<PaginaCadastro />} />
       <Route path="/home" element={<PaginaHome />} />
       <Route path="/categorias" element={<PaginaCategoria />} />
-      <Route path="/adicionarFilme" element={<CadastroFilme />} />
+      <Route path="/adicionarFilmes" element={<CadastroFilme />} />
       <Route path="/gerenciarFilmes" element={<PaginaGerenciarFilmes />} />
     </Routes>
   )
