@@ -118,38 +118,51 @@ details[open] .sumarioFiltro::after {
   border-color: #00d8ff;
 }
 
-.rotuloOpcao input[type="checkbox"]:focus-visible {
+.rotuloOpcao input[type="checkbox"]:focus-visible,
+.rotuloOpcao input[type="radio"]:focus-visible {
   outline: 2px solid #00d8ff;
   outline-offset: 2px;
 }
 
-/* CSS para a barra de busca movida */
-.campoBuscaFiltro {
-  position: relative;
-  min-width: 300px;
-}
+/* --- NOVOS ESTILOS --- */
 
-.campoBuscaFiltro input[type='search'] {
-  padding: 10px 15px;
-  padding-right: 40px; /* Espaço para o ícone */
-  border: 2px solid #555;
+.botaoAplicar {
+  background: linear-gradient(to right, #0C38C9, #8D0B99);
+  border: none;
   border-radius: 20px;
-  min-width: 300px;
-  background-color: #1a1a1a;
+  padding: 10px;
   color: white;
   font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+}
+.botaoAplicar:hover {
+  opacity: 0.8;
 }
 
-.campoBuscaFiltro input[type='search']:focus {
-  outline: none;
-  border-color: #00d8ff;
+.botaoLimpar {
+    background-color: #555;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 12px;
+    cursor: pointer;
+    margin-top: 10px;
+    width: 100%;
+    font-size: 0.9rem;
 }
 
-.iconeBuscaFiltro {
-  position: absolute;
-  right: 15px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #aaa;
-  font-size: 1.2rem;
+.botaoLimpar:hover {
+    background-color: #ff4d4d;
+}
+
+.grupoOpcoes {
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.grupoOpcoes label {
+  padding: 5px;
+  border-radius: 4px;
 }

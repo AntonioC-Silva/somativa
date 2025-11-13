@@ -7,6 +7,8 @@ import PaginaHome from './pages/home/home.jsx'
 import PaginaCategoria from './pages/categorias/categoria.jsx'
 import CadastroFilme from './pages/cadastroFilme/cadastroFilme.jsx'
 import PaginaGerenciarFilmes from './pages/gerenciarFilmes/gerenciarFilmes.jsx'
+// 1. Importar a nova página
+import PaginaSobreNos from './pages/sobreNos/sobreNos.jsx'
 
 
 function App() {
@@ -19,6 +21,8 @@ function App() {
       <Route path="/categorias" element={<PaginaCategoria />} />
       <Route path="/adicionarFilmes" element={<CadastroFilme />} />
       <Route path="/gerenciarFilmes" element={<PaginaGerenciarFilmes />} />
+      {/* 2. Adicionar a rota para a página */}
+      <Route path="/sobre" element={<PaginaSobreNos />} />
     </Routes>
   )
 }

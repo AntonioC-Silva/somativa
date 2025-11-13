@@ -7,8 +7,10 @@ function CardGerenciamento({ filme, tipo, aoAprovar, aoRecusar, aoEditar, aoRemo
     const posterPadrao = 'https://placehold.co/300x450/222/fff?text=Poster';
     
     const generos = filme.genero_string || filme.generos || 'N/A';
-    const elenco = filme.elenco_string || filme.atores || 'N/A';
-    const diretor = filme.diretor_nome || 'N/A';
+    const elenco = filme.elenco_string || filme.elenco || 'N/A';
+    const diretor = filme.diretor_sobrenome
+        ? `${filme.diretor_nome || ''} ${filme.diretor_sobrenome || ''}`.trim()
+        : (filme.diretor_nome || 'N/A');
 
     return (
         <article className="cardGerenciamento">

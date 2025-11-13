@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import NavBar from '../../components/navBar/navBar';
 import Footer from '../../components/footer/footer';
 import CardGerenciamento from '../../components/cardGerenciamento/cardGerenciamento';
+import ModalEdicao from '../../components/modalEdicao/modalEdicao';
 import './gerenciarFilmes.css';
 
 function PaginaGerenciarFilmes() {
@@ -13,6 +14,10 @@ function PaginaGerenciarFilmes() {
     const [erro, setErro] = useState(null);
     const [tipoUsuario, setTipoUsuario] = useState(null);
     const navegar = useNavigate();
+
+    const [modalAberto, setModalAberto] = useState(false);
+    const [filmeEditando, setFilmeEditando] = useState(null);
+    const [erroModal, setErroModal] = useState(null);
 
     const carregarDados = useCallback(async () => {
         setLoading(true);
@@ -91,6 +96,48 @@ function PaginaGerenciarFilmes() {
         }
     };
 
+    const lidarAbrirModalEditar = async (filme) => {
+        setErroModal(null);
+        try {
+            const resp = await fetch(`http://localhost:8000/api/filme/${filme.id_filme}`);
+            const dados = await resp.json();
+            if (dados.sucesso) {
+                setFilmeEditando(dados.filme);
+                setModalAberto(true);
+            } else {
+                setErro(dados.erro || 'Falha ao carregar dados do filme.');
+            }
+        } catch (err) {
+            setErro('Erro de conexão ao buscar detalhes do filme.');
+        }
+    };
+
+    const lidarFecharModal = () => {
+        setModalAberto(false);
+        setFilmeEditando(null);
+        setErroModal(null);
+    };
+
+    const lidarSalvarEdicao = async (formData) => {
+        setErroModal(null);
+        try {
+            const resp = await fetch(`http://localhost:8000/api/filme/${formData.id_filme}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
+            const resultado = await resp.json();
+            if (resultado.sucesso) {
+                lidarFecharModal();
+                carregarDados();
+            } else {
+                setErroModal(resultado.erro || 'Falha ao salvar.');
+            }
+        } catch (err) {
+            setErroModal('Erro de conexão ao salvar.');
+        }
+    };
+
     return (
         <main className="paginaGerenciar">
             <NavBar tipoUsuario={tipoUsuario} aoSair={lidarComLogout} />
@@ -128,13 +175,22 @@ function PaginaGerenciarFilmes() {
                             filme={filme} 
                             tipo="aprovado"
                             aoRemover={() => lidarComRemover(filme.id_filme)}
-                            aoEditar={() => alert('Função editar não implementada.')}
+                            aoEditar={() => lidarAbrirModalEditar(filme)}
                         />
                     ))}
                 </div>
             </section>
 
             <Footer />
+
+            {modalAberto && (
+                <ModalEdicao 
+                    filme={filmeEditando}
+                    aoFechar={lidarFecharModal}
+                    aoSalvar={lidarSalvarEdicao}
+                    erro={erroModal}
+                />
+            )}
         </main>
     );
 }

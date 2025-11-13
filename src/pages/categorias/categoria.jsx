@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useMemo } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import NavBar from '../../components/navBar/navBar';
 import Filtros from '../../components/filtros/filtros';
 import CardFilme from '../../components/cardFilme/cardFilme';
@@ -7,49 +7,88 @@ import Footer from '../../components/footer/footer';
 import './categoria.css'; 
 
 function PaginaCategoria(){
-    const [filmes, setFilmes] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const [todosOsFilmes, setTodosOsFilmes] = useState([]);
+    const [filmesFiltrados, setFilmesFiltrados] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [erro, setErro] = useState(null);
     const [tipoUsuario, setTipoUsuario] = useState(null);
     const navegar = useNavigate();
+    const location = useLocation();
 
-    const buscarFilmes = async (termoBusca) => {
-        setLoading(true);
-        setErro(null);
-        
-        let url = 'http://localhost:8000/api/filmes';
-        
-        if (termoBusca && termoBusca.trim() !== '') {
-            url = `http://localhost:8000/api/filmes/pesquisa?q=${encodeURIComponent(termoBusca)}`;
-        }
-
-        try {
-            const resposta = await fetch(url);
-            if (!resposta.ok) {
-                throw new Error('Falha ao buscar dados do servidor');
-            }
-            const dados = await resposta.json();
-            if (dados.sucesso) {
-                setFilmes(dados.filmes);
-            } else {
-                setErro(dados.erro);
-            }
-        } catch (err) {
-            setErro(err.message);
-        } finally {
-            setLoading(false);
-        }
-    };
+    const params = useMemo(() => new URLSearchParams(location.search), [location.search]);
+    const termoQuery = params.get('q') || '';
+    const generoQuery = params.get('genero') || '';
+    const anoQuery = params.get('ano') || '';
+    const diretorQuery = params.get('diretor') || '';
+    const atorQuery = params.get('ator') || '';
 
     useEffect(() => {
         const tipo = localStorage.getItem('tipo_usuario');
         if (!tipo) {
             navegar('/');
-        } else {
-            setTipoUsuario(tipo);
+            return;
         }
-        buscarFilmes('');
-    }, [navegar]);
+        setTipoUsuario(tipo);
+
+        const buscarTodosOsFilmes = async () => {
+            setLoading(true);
+            setErro(null);
+            try {
+                const resposta = await fetch('http://localhost:8000/api/filmes');
+                if (!resposta.ok) {
+                    throw new Error('Falha ao buscar dados do servidor');
+                }
+                const dados = await resposta.json();
+                if (dados.sucesso) {
+                    setTodosOsFilmes(dados.filmes);
+                } else {
+                    setErro(dados.erro);
+                }
+            } catch (err) {
+                setErro(err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        buscarTodosOsFilmes();
+    }, [navegar]); 
+
+    useEffect(() => {
+        if (todosOsFilmes.length === 0) return;
+
+        let filmesTemp = [...todosOsFilmes];
+
+        if (termoQuery) {
+            filmesTemp = filmesTemp.filter(f => 
+                f.titulo.toLowerCase().includes(termoQuery.toLowerCase())
+            );
+        }
+        if (generoQuery) {
+            filmesTemp = filmesTemp.filter(f => 
+                f.generos && f.generos.toLowerCase().includes(generoQuery.toLowerCase())
+            );
+        }
+        if (anoQuery) {
+            filmesTemp = filmesTemp.filter(f => 
+                f.ano.toString() === anoQuery
+            );
+        }
+        if (diretorQuery) {
+            filmesTemp = filmesTemp.filter(f => {
+                const nomeCompleto = `${f.diretor_nome || ''} ${f.diretor_sobrenome || ''}`.toLowerCase();
+                return nomeCompleto.includes(diretorQuery.toLowerCase());
+            });
+        }
+        if (atorQuery) {
+            filmesTemp = filmesTemp.filter(f => 
+                f.elenco && f.elenco.toLowerCase().includes(atorQuery.toLowerCase())
+            );
+        }
+
+        setFilmesFiltrados(filmesTemp);
+
+    }, [location.search, todosOsFilmes, termoQuery, generoQuery, anoQuery, diretorQuery, atorQuery]);
 
     const lidarComLogout = (evento) => {
         evento.preventDefault();
@@ -59,23 +98,40 @@ function PaginaCategoria(){
         navegar('/');
     };
 
-    const lidarBusca = (termo) => {
-        buscarFilmes(termo);
+    const aoAtualizarFiltros = (filtros) => {
+        const params = new URLSearchParams();
+        
+        if (filtros.q) params.set('q', filtros.q);
+        if (filtros.genero) params.set('genero', filtros.genero);
+        if (filtros.ano) params.set('ano', filtros.ano);
+        if (filtros.diretor) params.set('diretor', filtros.diretor);
+        if (filtros.ator) params.set('ator', filtros.ator);
+        
+        navegar(`/categorias?${params.toString()}`);
     };
 
     return(
         <div className="paginaCategoria">
             <NavBar tipoUsuario={tipoUsuario} aoSair={lidarComLogout} />
-            <Filtros aoMudarBusca={lidarBusca} />
+            <Filtros 
+                valoresIniciais={{
+                    q: termoQuery,
+                    genero: generoQuery,
+                    ano: anoQuery,
+                    diretor: diretorQuery,
+                    ator: atorQuery
+                }}
+                aoAtualizarFiltros={aoAtualizarFiltros}
+            />
             
             <main className="containerCategoria">
-                {loading && <p className="mensagemCarregando">Buscando...</p>}
+                {loading && <p className="mensagemCarregando">Carregando filmes...</p>}
                 {erro && <p className="mensagemErro">Erro: {erro}</p>}
                 
                 {!loading && !erro && (
                     <div className="gradeFilmes">
-                        {filmes.length > 0 ? (
-                            filmes.map(filme => (
+                        {filmesFiltrados.length > 0 ? (
+                            filmesFiltrados.map(filme => (
                                 <CardFilme key={filme.id_filme} filme={{
                                     id: filme.id_filme,
                                     titulo: filme.titulo,
@@ -83,7 +139,7 @@ function PaginaCategoria(){
                                 }} />
                             ))
                         ) : (
-                            <p className="mensagemVazio">Nenhum filme encontrado.</p>
+                            <p className="mensagemVazio">Nenhum filme encontrado para estes filtros.</p>
                         )}
                     </div>
                 )}
