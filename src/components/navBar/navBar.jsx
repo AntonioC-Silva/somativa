@@ -67,11 +67,11 @@ function NavBar({ tipoUsuario, aoSair }) {
                     >
                         {tipoUsuario === 'adm' ? (
                             <li role="none">
-                                <Link to="/gerenciar-filmes" role="menuitem">Gerenciar Filmes</Link>
+                                <Link to="/gerenciarFilmes" role="menuitem">Gerenciar Filmes</Link>
                             </li>
                         ) : (
                             <li role="none">
-                                <Link to="/adicionar-filme" role="menuitem">Adicionar Filme</Link>
+                                <Link to="/adicionarFilmes" role="menuitem">Adicionar Filme</Link>
                             </li>
                         )}
                         

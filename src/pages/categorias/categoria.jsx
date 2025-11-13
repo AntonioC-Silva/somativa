@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import NavBar from '../../components/navBar/navBar';
 import Filtros from '../../components/filtros/filtros';
 import CardFilme from '../../components/cardFilme/cardFilme';
@@ -9,6 +10,8 @@ function PaginaCategoria(){
     const [filmes, setFilmes] = useState([]);
     const [loading, setLoading] = useState(false);
     const [erro, setErro] = useState(null);
+    const [tipoUsuario, setTipoUsuario] = useState(null);
+    const navegar = useNavigate();
 
     const buscarFilmes = async (termoBusca) => {
         setLoading(true);
@@ -39,8 +42,22 @@ function PaginaCategoria(){
     };
 
     useEffect(() => {
+        const tipo = localStorage.getItem('tipo_usuario');
+        if (!tipo) {
+            navegar('/');
+        } else {
+            setTipoUsuario(tipo);
+        }
         buscarFilmes('');
-    }, []);
+    }, [navegar]);
+
+    const lidarComLogout = (evento) => {
+        evento.preventDefault();
+        localStorage.removeItem('sessao_usuario');
+        localStorage.removeItem('tipo_usuario');
+        setTipoUsuario(null);
+        navegar('/');
+    };
 
     const lidarBusca = (termo) => {
         buscarFilmes(termo);
@@ -48,7 +65,7 @@ function PaginaCategoria(){
 
     return(
         <div className="paginaCategoria">
-            <NavBar tipoUsuario="comum"/>
+            <NavBar tipoUsuario={tipoUsuario} aoSair={lidarComLogout} />
             <Filtros aoMudarBusca={lidarBusca} />
             
             <main className="containerCategoria">

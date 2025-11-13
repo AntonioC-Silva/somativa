@@ -1,0 +1,141 @@
+.cardGerenciamento {
+    display: flex;
+    background-color: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 8px;
+    overflow: hidden;
+    height: 250px;
+    color: #eee;
+}
+
+.cardPoster {
+    width: 170px;
+    flex-shrink: 0;
+    margin: 0;
+}
+
+.cardPoster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.cardInfo {
+    flex-grow: 1;
+    padding: 1rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.cardInfo header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: 1px solid #444;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.cardInfo h3 {
+    font-family: 'Iceland', sans-serif;
+    font-size: 1.8rem;
+    color: #CD39E7;
+    margin: 0;
+}
+
+.infoAno {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #aaa;
+    margin: 0;
+}
+
+.infoSinopse {
+    font-size: 0.9rem;
+    color: #ccc;
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0 0 0.5rem 0;
+    line-height: 1.4;
+}
+
+.infoDetalhes {
+    font-size: 0.8rem;
+    color: #888;
+    border-top: 1px solid #333;
+    padding-top: 0.5rem;
+}
+
+.infoDetalhes p {
+    margin: 2px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.infoDetalhes p strong {
+    color: #aaa;
+}
+
+.cardAcoes {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.8rem;
+    background-color: #111;
+    padding: 1rem 1.5rem;
+    border-left: 1px solid #333;
+}
+
+.botaoAcao {
+    font-family: Arial, sans-serif;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-width: 120px;
+}
+
+.botaoAcao i {
+    font-size: 1.1rem;
+}
+
+.botaoAcao.aprovar {
+    background: linear-gradient(to right, #0C38C9, #8D0B99);
+}
+.botaoAcao.aprovar:hover {
+    opacity: 0.8;
+}
+
+.botaoAcao.recusar {
+    background-color: #555;
+}
+.botaoAcao.recusar:hover {
+    background-color: #ff4d4d;
+}
+
+.botaoAcao.editar {
+    background-color: #00d8ff;
+    color: #000;
+}
+.botaoAcao.editar:hover {
+    opacity: 0.8;
+}
+
+.botaoAcao.remover {
+    background-color: #555;
+}
+.botaoAcao.remover:hover {
+    background-color: #ff4d4d;
+}

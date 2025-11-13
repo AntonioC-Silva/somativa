@@ -6,10 +6,8 @@ import PaginaCadastro from './pages/cadastro/cadastro.jsx'
 import PaginaHome from './pages/home/home.jsx'
 import PaginaCategoria from './pages/categorias/categoria.jsx'
 import CadastroFilme from './pages/cadastroFilme/cadastroFilme.jsx'
+import PaginaGerenciarFilmes from './pages/gerenciarFilmes/gerenciarFilmes.jsx'
 
-function PaginaGerenciarFilmes() {
-  return <div style={{color: 'white', paddingTop: '100px'}}>Página de Gerenciar Filmes (Admin)</div>
-}
 
 function App() {
   
@@ -19,9 +17,8 @@ function App() {
       <Route path="/cadastro" element={<PaginaCadastro />} />
       <Route path="/home" element={<PaginaHome />} />
       <Route path="/categorias" element={<PaginaCategoria />} />
-      
-      <Route path="/adicionar-filme" element={<CadastroFilme />} />
-      <Route path="/gerenciar-filmes" element={<PaginaGerenciarFilmes />} />
+      <Route path="/adicionarFilme" element={<CadastroFilme />} />
+      <Route path="/gerenciarFilmes" element={<PaginaGerenciarFilmes />} />
     </Routes>
   )
 }

@@ -1,0 +1,25 @@
+.paginaGerenciar {
+    background-color: #141414;
+    color: #fff;
+    padding-top: 80px;
+    min-height: 100vh;
+}
+
+.secaoGerenciar {
+    width: 90%;
+    max-width: 1400px;
+    margin: 40px auto;
+    padding: 2rem;
+    background-color: #000;
+    border-radius: 8px;
+}
+
+.listaGerenciar {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.mensagemErro {
+    color: #ff6b6b;
+}

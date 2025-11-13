@@ -24,6 +24,8 @@ function PainelLogin() {
       const dados = await resposta.json();
 
       if (resposta.ok && dados.sucesso) {
+        localStorage.setItem('sessao_usuario', JSON.stringify(dados.usuario));
+        localStorage.setItem('tipo_usuario', dados.tipo); 
         navegar('/home'); 
       } else {
         setErro(dados.erro || 'Erro desconhecido');

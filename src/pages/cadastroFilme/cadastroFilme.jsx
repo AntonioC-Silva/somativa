@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import NavBar from '../../components/navBar/navBar';
 import './cadastroFilme.css';
 
@@ -66,6 +67,25 @@ function CadastroFilme() {
   
   const [mensagem, setMensagem] = useState('');
   const [loading, setLoading] = useState(false);
+  const [tipoUsuario, setTipoUsuario] = useState(null);
+  const navegar = useNavigate();
+
+  useEffect(() => {
+    const tipo = localStorage.getItem('tipo_usuario');
+    if (!tipo) {
+        navegar('/');
+    } else {
+        setTipoUsuario(tipo);
+    }
+  }, [navegar]);
+
+  const lidarComLogout = (evento) => {
+    evento.preventDefault();
+    localStorage.removeItem('sessao_usuario');
+    localStorage.removeItem('tipo_usuario');
+    setTipoUsuario(null);
+    navegar('/');
+  };
 
   const lidarComEnvio = async (evento) => {
     evento.preventDefault();
@@ -132,7 +152,7 @@ function CadastroFilme() {
 
   return (
     <> 
-      <NavBar tipoUsuario="adm" /> 
+      <NavBar tipoUsuario={tipoUsuario} aoSair={lidarComLogout} /> 
 
       <form className="formularioFilme" onSubmit={lidarComEnvio}>
         <fieldset className="grupoCampos" disabled={loading}>

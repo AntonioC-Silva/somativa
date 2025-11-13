@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import NavBar from '../../components/navBar/navBar';
 import CarrosselHome from '../../components/carrosselHome/carrosselHome';
 import Footer from '../../components/footer/footer';
@@ -6,35 +7,68 @@ import "./home.css"
 import ListaFilmes from '../../components/listaFilme/listaFilmes';
 
 function PaginaHome() {
-    const [filmes, setFilmes] = useState([]);
+    const [filmesDestaque, setFilmesDestaque] = useState([]);
+    const [filmesAcao, setFilmesAcao] = useState([]);
+    const [filmesSciFi, setFilmesSciFi] = useState([]);
+    
     const [loading, setLoading] = useState(true);
     const [erro, setErro] = useState(null);
-    const [usuarioLogado, setUsuarioLogado] = useState({ tipo: 'adm' }); 
+    const [tipoUsuario, setTipoUsuario] = useState(null);
+    const navegar = useNavigate();
 
     useEffect(() => {
+        const tipo = localStorage.getItem('tipo_usuario');
+        if (!tipo) {
+            navegar('/'); 
+        } else {
+            setTipoUsuario(tipo);
+        }
+
         const carregarFilmes = async () => {
             setLoading(true);
             setErro(null);
             try {
-                const resposta = await fetch('http://localhost:8000/api/filmes');
-                if (!resposta.ok) {
-                    throw new Error('Falha ao buscar filmes');
+                const [respDestaques, respAcao, respSciFi] = await Promise.all([
+                    fetch('http://localhost:8000/api/filmes'),
+                    fetch('http://localhost:8000/api/filmes/genero/Ação'),
+                    fetch('http://localhost:8000/api/filmes/genero/Ficção Científica')
+                ]);
+
+                if (!respDestaques.ok || !respAcao.ok || !respSciFi.ok) {
+                    throw new Error('Falha ao buscar uma das listas de filmes');
                 }
-                const dados = await resposta.json();
-                
-                if (dados.sucesso) {
-                    const filmesTransformados = dados.filmes.map(filme => ({
+
+                const dadosDestaques = await respDestaques.json();
+                const dadosAcao = await respAcao.json();
+                const dadosSciFi = await respSciFi.json();
+
+                if (dadosDestaques.sucesso) {
+                    setFilmesDestaque(dadosDestaques.filmes.map(filme => ({
                         id: filme.id_filme,
                         titulo: filme.titulo,
-                        urlCapa: filme.poster,
                         descricao: filme.sinopse,
                         urlImagem: filme.poster,
-                        genero: filme.genero 
-                    }));
-                    setFilmes(filmesTransformados);
-                } else {
-                    setErro(dados.erro);
+                        urlCapa: filme.poster,
+                        genero: filme.generos
+                    })));
                 }
+
+                if (dadosAcao.sucesso) {
+                    setFilmesAcao(dadosAcao.filmes.map(filme => ({
+                        id: filme.id_filme,
+                        titulo: filme.titulo,
+                        urlCapa: filme.poster
+                    })));
+                }
+                
+                if (dadosSciFi.sucesso) {
+                    setFilmesSciFi(dadosSciFi.filmes.map(filme => ({
+                        id: filme.id_filme,
+                        titulo: filme.titulo,
+                        urlCapa: filme.poster
+                    })));
+                }
+
             } catch (err) {
                 setErro(err.message);
             } finally {
@@ -42,27 +76,27 @@ function PaginaHome() {
             }
         };
 
-        carregarFilmes();
-    }, []);
+        if (tipo) {
+            carregarFilmes();
+        }
+    }, [navegar]);
 
-    const handleLogout = (evento) => {
+    const lidarComLogout = (evento) => {
         evento.preventDefault();
-        alert("Usuário deslogado!");
-        setUsuarioLogado(null);
+        localStorage.removeItem('sessao_usuario');
+        localStorage.removeItem('tipo_usuario');
+        setTipoUsuario(null);
+        navegar('/');
     };
-
-    const filmesAcao = filmes.filter(f => f.genero && f.genero.includes('Ação')).slice(0, 10);
-    const filmesSciFi = filmes.filter(f => f.genero && f.genero.includes('Ficção')).slice(0, 10);
-    const destaquesCarrossel = filmes.slice(0, 3);
 
     return (
         <>
             <NavBar 
-                tipoUsuario={usuarioLogado ? usuarioLogado.tipo : null} 
-                aoSair={handleLogout} 
+                tipoUsuario={tipoUsuario} 
+                aoSair={lidarComLogout} 
             />
             
-            <CarrosselHome destaques={destaquesCarrossel} loading={loading} />
+            <CarrosselHome destaques={filmesDestaque.slice(0, 3)} loading={loading} />
             
             <main className='home'>
                 
@@ -72,18 +106,18 @@ function PaginaHome() {
                 {!loading && !erro && (
                     <>
                         <ListaFilmes 
-                            tituloSecao="Destaques da Semana" 
-                            listaFilmes={filmes.slice(0, 10)} 
+                            tituloSecao="Destaques" 
+                            listaFilmes={filmesDestaque.slice(3, 13)} 
                         />
 
                         <ListaFilmes 
                             tituloSecao="Ação e Aventura" 
-                            listaFilmes={filmesAcao.length > 0 ? filmesAcao : filmes.slice(4, 14)} 
+                            listaFilmes={filmesAcao} 
                         />
 
                          <ListaFilmes 
                             tituloSecao="Ficção Científica" 
-                            listaFilmes={filmesSciFi.length > 0 ? filmesSciFi : filmes.slice(2, 12)}
+                            listaFilmes={filmesSciFi}
                         />
                     </>
                 )}
