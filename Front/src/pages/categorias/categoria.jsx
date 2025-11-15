@@ -64,11 +64,25 @@ function PaginaCategoria(){
                 f.titulo.toLowerCase().includes(termoQuery.toLowerCase())
             );
         }
+        
+        // --- LÓGICA DE GÊNERO MODIFICADA (AGORA É "E" / "AND") ---
         if (generoQuery) {
-            filmesTemp = filmesTemp.filter(f => 
-                f.generos && f.generos.toLowerCase().includes(generoQuery.toLowerCase())
-            );
+            // 1. Transforma a query "Ação,Comédia" em ["ação", "comédia"]
+            const generosParaFiltrar = generoQuery.toLowerCase().split(',').filter(Boolean).map(g => g.trim());
+            
+            if (generosParaFiltrar.length > 0) {
+                filmesTemp = filmesTemp.filter(f => {
+                    if (!f.generos) return false;
+                    // 2. Transforma os gêneros do filme "Ação, Aventura" em ["ação", "aventura"]
+                    const generosDoFilme = f.generos.toLowerCase().split(',').map(g => g.trim());
+                    
+                    // 3. Verifica se TODOS os gêneros do filtro estão incluídos nos gêneros do filme (lógica E)
+                    return generosParaFiltrar.every(generoFiltro => generosDoFilme.includes(generoFiltro));
+                });
+            }
         }
+        // --- FIM DA MODIFICAÇÃO ---
+
         if (anoQuery) {
             filmesTemp = filmesTemp.filter(f => 
                 f.ano.toString() === anoQuery

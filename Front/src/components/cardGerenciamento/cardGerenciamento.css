@@ -139,3 +139,11 @@
 .botaoAcao.remover:hover {
     background-color: #ff4d4d;
 }
+
+.cardGerenciamento.cardEdicao {
+    border-left: 5px solid #00d8ff;
+}
+
+.cardGerenciamento.cardEdicao h3 {
+    color: #00d8ff;
+}

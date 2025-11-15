@@ -70,6 +70,9 @@ function CadastroFilme() {
   const [tipoUsuario, setTipoUsuario] = useState(null);
   const navegar = useNavigate();
 
+  // Define se é admin (para textos dinâmicos)
+  const is_admin = tipoUsuario === 'adm';
+
   useEffect(() => {
     const tipo = localStorage.getItem('tipo_usuario');
     if (!tipo) {
@@ -111,13 +114,24 @@ function CadastroFilme() {
       ano: parseInt(ano, 10),
       elenco: elenco,
       genero: generosSelecionados.join(', '), 
-      nomeProdutora: produtora,
+      nomeProdutora: produtora, // Este campo não está sendo usado no backend
       poster: posterUrl,
       sinopse: sinopse,
     };
 
+    // --- LÓGICA DE ROTA MODIFICADA ---
+    // Define o endpoint e a mensagem de sucesso com base no tipo de usuário
+    const url = is_admin
+      ? 'http://localhost:8000/api/filme/admin-add' // Rota do Admin (Cadastro Direto)
+      : 'http://localhost:8000/api/filmes'; // Rota do Usuário Comum (Pendente)
+
+    const mensagemSucesso = is_admin
+      ? 'Filme cadastrado com sucesso no catálogo!'
+      : 'Filme enviado para aprovação!';
+    // --- FIM DA LÓGICA ---
+
     try {
-      const resposta = await fetch('http://localhost:8000/api/filmes', {
+      const resposta = await fetch(url, { // Usa a URL dinâmica
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -128,7 +142,7 @@ function CadastroFilme() {
       const resultado = await resposta.json();
 
       if (resposta.ok && resultado.sucesso) {
-        setMensagem('Filme cadastrado com sucesso!');
+        setMensagem(mensagemSucesso); // Usa a mensagem de sucesso dinâmica
         setTitulo('');
         setOrcamento('');
         setDiretor('');
@@ -156,7 +170,10 @@ function CadastroFilme() {
 
       <form className="formularioFilme" onSubmit={lidarComEnvio}>
         <fieldset className="grupoCampos" disabled={loading}>
-          <legend className="tituloFormulario">Cadastrar Novo Filme</legend>
+          {/* Título dinâmico */}
+          <legend className="tituloFormulario">
+            {is_admin ? 'Cadastrar Novo Filme (Admin)' : 'Sugerir Novo Filme'}
+          </legend>
 
           <section className="containerGrid">
             
@@ -281,8 +298,9 @@ function CadastroFilme() {
             </div>
           )}
 
+          {/* Botão dinâmico */}
           <button type="submit" className="botaoEnvio" disabled={loading}>
-            {loading ? 'Enviando...' : 'Enviar Pedido de Cadastro'}
+            {loading ? 'Enviando...' : (is_admin ? 'Cadastrar Filme no Catálogo' : 'Enviar Pedido de Cadastro')}
           </button>
         </fieldset>
       </form>

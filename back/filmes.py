@@ -253,3 +253,172 @@ def atualizar_filme(id_filme, dados):
     except Exception as e:
         print(f"Erro em atualizar_filme: {e}")
         return {"sucesso": False, "erro": str(e)}, 500
+
+# ... (todas as suas funções existentes, como atualizar_filme, terminam aqui) ...
+
+def sugerir_edicao_filme(id_filme, dados):
+    """ Salva uma sugestão de edição na tabela edicao_pendente. """
+    try:
+        query = """
+            INSERT INTO edicao_pendente
+            (id_filme, titulo, sinopse, elenco, poster, ano)
+            VALUES (%s, %s, %s, %s, %s, %s)
+        """
+        valores = (
+            id_filme,
+            dados.get('titulo'),
+            dados.get('sinopse'),
+            dados.get('elenco'),
+            dados.get('poster'),
+            dados.get('ano')
+        )
+        edicao_id = banco.executar_query(query, valores, commit=True)
+        if edicao_id:
+            return {"sucesso": True, "mensagem": "Sugestão de edição enviada para aprovação."}, 201
+        else:
+            return {"sucesso": False, "erro": "Falha ao enviar sugestão."}, 500
+    except Exception as e:
+        print(f"Erro em sugerir_edicao_filme: {e}")
+        return {"sucesso": False, "erro": str(e)}, 500
+
+def buscar_edicoes_pendentes():
+    """ Busca todas as edições pendentes com detalhes do filme original. """
+    try:
+        query = """
+            SELECT 
+                e.*, 
+                f.titulo as titulo_original
+            FROM edicao_pendente e
+            JOIN filme f ON e.id_filme = f.id_filme
+            WHERE e.status = 'pendente'
+            ORDER BY e.data_sugestao ASC
+        """
+        edicoes = banco.executar_query(query, fetch_all=True)
+        return {"sucesso": True, "edicoes": edicoes}, 200
+    except Exception as e:
+        print(f"Erro em buscar_edicoes_pendentes: {e}")
+        return {"sucesso": False, "erro": str(e)}, 500
+
+def aprovar_edicao_pendente(id_edicao):
+    """ Aprova uma edição: atualiza o filme e remove a pendência. """
+    conexao = banco.conectar_banco()
+    if conexao is None:
+        return {"sucesso": False, "erro": "Falha na conexão com o banco"}, 500
+    
+    cursor = conexao.cursor(dictionary=True)
+    try:
+        # 1. Busca os dados da edição pendente
+        cursor.execute("SELECT * FROM edicao_pendente WHERE id_edicao = %s", (id_edicao,))
+        edicao = cursor.fetchone()
+        if not edicao:
+            return {"sucesso": False, "erro": "Edição pendente não encontrada"}, 404
+
+        # 2. Atualiza o filme original com os dados da edição
+        query_update = """
+            UPDATE filme 
+            SET 
+                titulo = %s, 
+                sinopse = %s, 
+                elenco = %s, 
+                poster = %s, 
+                ano = %s
+            WHERE id_filme = %s
+        """
+        valores_update = (
+            edicao['titulo'],
+            edicao['sinopse'],
+            edicao['elenco'],
+            edicao['poster'],
+            edicao['ano'],
+            edicao['id_filme']
+        )
+        cursor.execute(query_update, valores_update)
+
+        # 3. Remove a edição pendente
+        cursor.execute("DELETE FROM edicao_pendente WHERE id_edicao = %s", (id_edicao,))
+        
+        conexao.commit()
+        return {"sucesso": True, "mensagem": "Edição aprovada e filme atualizado."}, 200
+
+    except Exception as e:
+        conexao.rollback()
+        print(f"Erro em aprovar_edicao_pendente: {e}")
+        return {"sucesso": False, "erro": str(e)}, 500
+    finally:
+        cursor.close()
+        conexao.close()
+
+def recusar_edicao_pendente(id_edicao):
+    """ Recusa (apaga) uma sugestão de edição. """
+    try:
+        query = "DELETE FROM edicao_pendente WHERE id_edicao = %s"
+        banco.executar_query(query, (id_edicao,), commit=True)
+        return {"sucesso": True, "mensagem": "Edição recusada com sucesso."}, 200
+    except Exception as e:
+        print(f"Erro em recusar_edicao_pendente: {e}")
+        return {"sucesso": False, "erro": str(e)}, 500
+    
+def adicionar_filme_direto(dados):
+    conexao = banco.conectar_banco()
+    if conexao is None:
+        return {"sucesso": False, "erro": "falha na conexao com banco"}, 500
+    cursor = conexao.cursor(dictionary=True)
+    
+    try:
+        tempo_duracao = dados.get('tempoDeDuracao')
+        if isinstance(tempo_duracao, int):
+            tempo_duracao_str = segundos_para_tempo_str(tempo_duracao)
+        else:
+            tempo_duracao_str = tempo_duracao
+
+        nome_diretor = dados.get('nomeDiretor', '')
+        id_diretor = buscar_ou_criar_id(cursor, 'diretor', nome_diretor)
+
+        sql_filme = """
+            insert into filme (titulo, orcamento, id_diretor, tempo_de_duracao, ano, poster, sinopse, elenco)
+            values (%s, %s, %s, %s, %s, %s, %s, %s)
+        """
+        valores_filme = (
+            dados.get('titulo'), 
+            dados.get('orcamento'), 
+            id_diretor,
+            tempo_duracao_str, 
+            dados.get('ano'), 
+            dados.get('poster'),
+            dados.get('sinopse'), 
+            dados.get('elenco')
+        )
+        cursor.execute(sql_filme, valores_filme)
+        id_filme_novo = cursor.lastrowid
+
+        generos_str = dados.get('genero', '')
+        if generos_str:
+            generos_lista = [g.strip() for g in generos_str.split(',')]
+            for nome_genero in generos_lista:
+                if nome_genero:
+                    id_genero = buscar_ou_criar_id(cursor, 'genero', nome_genero)
+                    if id_genero:
+                        cursor.execute("insert into filme_genero (id_filme, id_genero) values (%s, %s)", (id_filme_novo, id_genero))
+
+        elenco_str = dados.get('elenco', '')
+        if elenco_str:
+            elenco_lista = [a.strip() for a in elenco_str.split(',')]
+            for nome_completo in elenco_lista:
+                if nome_completo:
+                    partes = nome_completo.split(' ', 1)
+                    nome = partes[0]
+                    sobrenome = partes[1] if len(partes) > 1 else ''
+                    id_ator = buscar_ou_criar_id(cursor, 'ator', nome, sobrenome)
+                    if id_ator:
+                        cursor.execute("insert into filme_ator (id_filme, id_ator) values (%s, %s)", (id_filme_novo, id_ator))
+
+        conexao.commit()
+        return {"sucesso": True, "id_filme": id_filme_novo}, 201
+
+    except Exception as e:
+        conexao.rollback()
+        print(f"Erro em adicionar_filme_direto: {e}")
+        return {"sucesso": False, "erro": str(e)}, 500
+    finally:
+        cursor.close()
+        conexao.close()

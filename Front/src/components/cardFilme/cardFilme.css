@@ -1,3 +1,10 @@
+/* Adicione este novo seletor ao final do arquivo */
+.linkCardFilme {
+    text-decoration: none; /* Remove sublinhado do link */
+    color: inherit;       /* Faz o link herdar a cor do texto pai */
+    display: block;       /* Garante que o link ocupe o espaço do card */
+}
+
 .cardFilme {
     padding: 10px; /* Espaço entre os cards no carrossel */
     transition: transform 0.3s ease;

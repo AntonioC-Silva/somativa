@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './modalEdicao.css';
 
-function ModalEdicao({ filme, aoFechar, aoSalvar, erro }) {
+// 1. Recebe 'loading' como prop
+function ModalEdicao({ filme, aoFechar, aoSalvar, erro, loading }) {
     
     const [formData, setFormData] = useState({});
-    const [loading, setLoading] = useState(false);
+    // 2. Remove o state de loading interno
+    // const [loading, setLoading] = useState(false); 
+    const modalRef = useRef(null);
 
     useEffect(() => {
         if (filme) {
@@ -21,6 +24,45 @@ function ModalEdicao({ filme, aoFechar, aoSalvar, erro }) {
         }
     }, [filme]);
 
+    // Efeito de acessibilidade (Focus Trap e 'Esc')
+    useEffect(() => {
+        if (!filme || !modalRef.current) return;
+        const modalNode = modalRef.current;
+        
+        const focusableElements = modalNode.querySelectorAll(
+            'input, textarea, button'
+        );
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+
+        firstElement?.focus();
+
+        const handleKeyDown = (e) => {
+            if (e.key === 'Escape') {
+                aoFechar();
+                return;
+            }
+            if (e.key !== 'Tab') return;
+            if (e.shiftKey) { 
+                if (document.activeElement === firstElement) {
+                    e.preventDefault();
+                    lastElement?.focus();
+                }
+            } else { 
+                if (document.activeElement === lastElement) {
+                    e.preventDefault();
+                    firstElement?.focus();
+                }
+            }
+        };
+
+        document.addEventListener('keydown', handleKeyDown);
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [filme, aoFechar]);
+
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
@@ -28,18 +70,24 @@ function ModalEdicao({ filme, aoFechar, aoSalvar, erro }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setLoading(true);
+        // 3. A função pai (aoSalvar) agora controla o loading
         await aoSalvar(formData);
-        setLoading(false);
     };
 
     if (!filme) return null;
 
     return (
         <div className="modalOverlay" onClick={aoFechar}>
-            <div className="modalConteudo" onClick={(e) => e.stopPropagation()}>
+            <div 
+                className="modalConteudo" 
+                onClick={(e) => e.stopPropagation()} 
+                ref={modalRef}
+                role="dialog" 
+                aria-modal="true" 
+                aria-labelledby="modal-titulo"
+            >
                 <form className="modalForm" onSubmit={handleSubmit}>
-                    <h2 className="tituloFormulario">Editar Filme</h2>
+                    <h2 className="tituloFormulario" id="modal-titulo">Editar Filme</h2>
                     
                     <label htmlFor="titulo" className="rotulo">Título:</label>
                     <input
@@ -105,11 +153,12 @@ function ModalEdicao({ filme, aoFechar, aoSalvar, erro }) {
                     {erro && <p className="formErro">{erro}</p>}
 
                     <div className="modalBotoes">
-                        <button type="button" className="botaoAcao recusar" onClick={aoFechar} disabled={loading}>
+                        <button typea="button" className="botaoAcao recusar" onClick={aoFechar} disabled={loading}>
                             Cancelar
                         </button>
                         <button type="submit" className="botaoAcao aprovar" disabled={loading}>
-                            {loading ? 'Salvando...' : 'Salvar Alterações'}
+                            {/* 4. Usa o prop 'loading' */}
+                            {loading ? 'Enviando...' : 'Salvar Alterações'}
                         </button>
                     </div>
                 </form>

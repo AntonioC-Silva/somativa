@@ -13,13 +13,20 @@ function Filtros({ valoresIniciais, aoAtualizarFiltros }) {
     const [tempAno, setTempAno] = useState(valoresIniciais.ano || '');
     const [tempDiretor, setTempDiretor] = useState(valoresIniciais.diretor || '');
     const [tempAtor, setTempAtor] = useState(valoresIniciais.ator || '');
-    const [generoSel, setGeneroSel] = useState(valoresIniciais.genero || '');
+    
+    // MODIFICADO: Estado para múltiplos gêneros (array)
+    const [generosSel, setGenerosSel] = useState(
+        valoresIniciais.genero ? valoresIniciais.genero.split(',').filter(Boolean) : []
+    );
 
     useEffect(() => {
         setTempAno(valoresIniciais.ano || '');
         setTempDiretor(valoresIniciais.diretor || '');
         setTempAtor(valoresIniciais.ator || '');
-        setGeneroSel(valoresIniciais.genero || '');
+        // MODIFICADO: Sincroniza o estado do array com os valores iniciais
+        setGenerosSel(
+            valoresIniciais.genero ? valoresIniciais.genero.split(',').filter(Boolean) : []
+        );
     }, [valoresIniciais]);
 
     const alternarFiltro = (e, nomeFiltro) => {
@@ -50,16 +57,25 @@ function Filtros({ valoresIniciais, aoAtualizarFiltros }) {
         setFiltroAberto(null); 
     };
 
+    // MODIFICADO: Lógica para checkbox (múltipla seleção)
     const lidarMudancaGenero = (e) => {
-        const novoGenero = e.target.value;
-        setGeneroSel(novoGenero);
-        aoAtualizarFiltros({ ...valoresIniciais, genero: novoGenero });
-        setFiltroAberto(null);
+        const { value, checked } = e.target;
+        let novosGeneros;
+
+        if (checked) {
+            novosGeneros = [...generosSel, value];
+        } else {
+            novosGeneros = generosSel.filter(g => g !== value);
+        }
+
+        setGenerosSel(novosGeneros);
+        aoAtualizarFiltros({ ...valoresIniciais, genero: novosGeneros.join(',') });
     };
 
+    // MODIFICADO: Limpa o array de gêneros
     const lidarLimparGenero = (e) => {
         e.preventDefault();
-        setGeneroSel('');
+        setGenerosSel([]);
         aoAtualizarFiltros({ ...valoresIniciais, genero: '' });
         setFiltroAberto(null);
     };
@@ -79,22 +95,23 @@ function Filtros({ valoresIniciais, aoAtualizarFiltros }) {
                             {generosDisponiveis.map(genero => (
                                 <label key={genero} className="rotuloOpcao">
                                 <input 
-                                    type="radio" 
+                                    type="checkbox" // MODIFICADO: de 'radio' para 'checkbox'
                                     name="genero" 
                                     value={genero}
-                                    checked={generoSel === genero}
-                                    onChange={lidarMudancaGenero}
+                                    checked={generosSel.includes(genero)} // MODIFICADO: verifica se 'includes' no array
+                                    onChange={lidarMudancaGenero} // MODIFICADO: usa a nova função
                                 /> 
                                 {genero}
                                 </label>
                             ))}
                             <button className="botaoLimpar" onClick={lidarLimparGenero}>
-                                Limpar Gênero
+                                Limpar Gêneros
                             </button>
                         </fieldset>
                     </details>
                 </li>
 
+                {/* O restante dos filtros (Ano, Diretor, Ator) permanece igual */}
                 <li className="itemFiltro">
                     <details className="detalhesFiltro" open={filtroAberto === 'ano'}>
                         <summary className="sumarioFiltro" onClick={(e) => alternarFiltro(e, 'ano')}>
