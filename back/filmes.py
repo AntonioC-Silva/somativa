@@ -88,7 +88,6 @@ def buscar_filmes_aprovados():
     query = """
         select 
             f.id_filme, f.titulo, f.poster, f.ano, f.sinopse, f.elenco,
-            f.backdrop_url,
             d.nome as diretor_nome, d.sobrenome as diretor_sobrenome,
             group_concat(distinct g.tipo separator ', ') as generos
         from filme f

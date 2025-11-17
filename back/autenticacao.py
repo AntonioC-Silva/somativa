@@ -57,7 +57,7 @@ def logar_usuario(usuario, senha):
                 "tipo": "comum",
                 "exp": datetime.datetime.utcnow() + datetime.timedelta(hours=24)
             }
-            token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
+            token = jwt.encode(payload, senha_seg, algorithm="HS256")
             
             return {
                 "sucesso": True, 
@@ -76,7 +76,7 @@ def logar_usuario(usuario, senha):
             "tipo": "adm",
             "exp": datetime.datetime.utcnow() + datetime.timedelta(hours=24)
         }
-        token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
+        token = jwt.encode(payload, senha_seg, algorithm="HS256")
 
         return {
             "sucesso": True, 
@@ -99,7 +99,7 @@ def verificar_token_admin(auth_header):
         
     token = partes[1]
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
+        payload = jwt.decode(token, senha_seg, algorithms=["HS256"])
         
         if payload.get('tipo') == 'adm':
             return True, payload

@@ -259,7 +259,7 @@ if __name__ == "__main__":
         print(f"nota: pasta '{pasta_front}' verificada")
 
     print(f"servidor rodando python puro em http://localhost:{porta}")
-    print("pressione ctrl+c para parar")
+
     
     socketserver.TCPServer.allow_reuse_address = True
     
