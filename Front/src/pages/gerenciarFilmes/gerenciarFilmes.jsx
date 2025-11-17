@@ -21,6 +21,14 @@ function PaginaGerenciarFilmes() {
     const [filmeEditando, setFilmeEditando] = useState(null);
     const [erroModal, setErroModal] = useState(null);
 
+    const getAuthHeaders = () => {
+        const token = localStorage.getItem('token_jwt');
+        return {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        };
+    };
+
     const carregarDados = useCallback(async () => {
         setLoading(true);
         setErro(null);
@@ -75,6 +83,7 @@ function PaginaGerenciarFilmes() {
         evento.preventDefault();
         localStorage.removeItem('sessao_usuario');
         localStorage.removeItem('tipo_usuario');
+        localStorage.removeItem('token_jwt');
         setTipoUsuario(null);
         navegar('/');
     };
@@ -82,7 +91,10 @@ function PaginaGerenciarFilmes() {
     const lidarComRecusar = async (id) => {
         if (!window.confirm('Tem certeza que deseja recusar este filme?')) return;
         try {
-            await fetch(`http://localhost:8000/api/filme-pendente/recusar/${id}`, { method: 'DELETE' });
+            await fetch(`http://localhost:8000/api/filme-pendente/recusar/${id}`, { 
+                method: 'DELETE',
+                headers: getAuthHeaders()
+            });
             carregarDados();
         } catch (err) {
             setErro('Falha ao recusar filme.');
@@ -91,7 +103,10 @@ function PaginaGerenciarFilmes() {
 
     const lidarComAprovar = async (id) => {
         try {
-            await fetch(`http://localhost:8000/api/filme/aprovar/${id}`, { method: 'POST' });
+            await fetch(`http://localhost:8000/api/filme/aprovar/${id}`, { 
+                method: 'POST',
+                headers: getAuthHeaders()
+            });
             carregarDados();
         } catch (err) {
             setErro('Falha ao aprovar filme.');
@@ -101,7 +116,10 @@ function PaginaGerenciarFilmes() {
     const lidarComRemover = async (id) => {
         if (!window.confirm('Tem certeza que deseja REMOVER este filme permanentemente?')) return;
         try {
-            await fetch(`http://localhost:8000/api/filme/remover/${id}`, { method: 'DELETE' });
+            await fetch(`http://localhost:8000/api/filme/remover/${id}`, { 
+                method: 'DELETE',
+                headers: getAuthHeaders()
+            });
             carregarDados();
         } catch (err) {
             setErro('Falha ao remover filme.');
@@ -113,7 +131,10 @@ function PaginaGerenciarFilmes() {
     const lidarRecusarEdicao = async (id_edicao) => {
         if (!window.confirm('Tem certeza que deseja recusar esta SUGESTÃO DE EDIÇÃO?')) return;
         try {
-            await fetch(`http://localhost:8000/api/filme/edicao/recusar/${id_edicao}`, { method: 'DELETE' });
+            await fetch(`http://localhost:8000/api/filme/edicao/recusar/${id_edicao}`, { 
+                method: 'DELETE',
+                headers: getAuthHeaders()
+            });
             carregarDados(); 
         } catch (err) {
             setErro('Falha ao recusar edição.');
@@ -123,7 +144,10 @@ function PaginaGerenciarFilmes() {
     const lidarAprovarEdicao = async (id_edicao) => {
         if (!window.confirm('APROVAR esta edição irá sobrescrever os dados atuais do filme. Continuar?')) return;
         try {
-            await fetch(`http://localhost:8000/api/filme/edicao/aprovar/${id_edicao}`, { method: 'POST' });
+            await fetch(`http://localhost:8000/api/filme/edicao/aprovar/${id_edicao}`, { 
+                method: 'POST',
+                headers: getAuthHeaders()
+            });
             carregarDados(); 
         } catch (err) {
             setErro('Falha ao aprovar edição.');
@@ -157,7 +181,7 @@ function PaginaGerenciarFilmes() {
         try {
             const resp = await fetch(`http://localhost:8000/api/filme/${formData.id_filme}`, {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
+                headers: getAuthHeaders(),
                 body: JSON.stringify(formData)
             });
             const resultado = await resp.json();

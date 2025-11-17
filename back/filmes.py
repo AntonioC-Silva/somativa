@@ -3,6 +3,7 @@ import time
 import random
 import datetime
 
+# converte segundos para formato hh:mm:ss
 def segundos_para_tempo_str(segundos):
     if not isinstance(segundos, int):
         try:
@@ -12,6 +13,7 @@ def segundos_para_tempo_str(segundos):
             
     return time.strftime('%H:%M:%S', time.gmtime(segundos))
 
+# acha o id de um ator/genero/diretor ou cria um novo se nao existir
 def buscar_ou_criar_id(cursor, tabela, valor_nome, sobrenome=''):
     if tabela == 'ator':
         query = f"select id_ator from ator where nome = %s and sobrenome = %s"
@@ -50,6 +52,7 @@ def buscar_ou_criar_id(cursor, tabela, valor_nome, sobrenome=''):
             return cursor.lastrowid
     return None
 
+# salva um filme na tabela de pendentes (sugestao de usuario)
 def adicionar_filme_pendente(dados):
     try:
         sql = """
@@ -80,10 +83,12 @@ def adicionar_filme_pendente(dados):
         print(f"Erro em adicionar_filme_pendente: {e}")
         return {"sucesso": False, "erro": str(e)}, 400
 
+# pega todos os filmes principais (catalogo)
 def buscar_filmes_aprovados():
     query = """
         select 
             f.id_filme, f.titulo, f.poster, f.ano, f.sinopse, f.elenco,
+            f.backdrop_url,
             d.nome as diretor_nome, d.sobrenome as diretor_sobrenome,
             group_concat(distinct g.tipo separator ', ') as generos
         from filme f
@@ -98,16 +103,18 @@ def buscar_filmes_aprovados():
     if filmes is not None:
         return {"sucesso": True, "filmes": filmes}, 200
     else:
-        return {"sucesso": False, "erro": "não foi possível buscar os filmes"}, 500
+        return {"sucesso": False, "erro": "nao foi possivel buscar os filmes"}, 500
 
+# pega os filmes que precisam de aprovacao
 def buscar_filmes_pendentes():
     query = "select * from filme_pendente order by id_pendente asc"
     filmes = banco.executar_query(query, fetch_all=True)
     if filmes is not None:
         return {"sucesso": True, "filmes": filmes}, 200
     else:
-        return {"sucesso": False, "erro": "não foi possível buscar os filmes pendentes"}, 500
+        return {"sucesso": False, "erro": "nao foi possivel buscar os filmes pendentes"}, 500
 
+# pega filmes aleatorios de um genero
 def buscar_filmes_por_genero(nome_genero):
     query = """
         select 
@@ -126,8 +133,9 @@ def buscar_filmes_por_genero(nome_genero):
     if filmes is not None:
         return {"sucesso": True, "filmes": filmes}, 200
     else:
-        return {"sucesso": False, "erro": "não foi possível buscar os filmes por genero"}, 500
+        return {"sucesso": False, "erro": "nao foi possivel buscar os filmes por genero"}, 500
 
+# procura filmes pelo titulo
 def buscar_filmes_por_titulo(termo_busca):
     if not termo_busca:
         return {"sucesso": True, "filmes": []}, 200
@@ -139,18 +147,21 @@ def buscar_filmes_por_titulo(termo_busca):
     else:
         return {"sucesso": False, "erro": "erro ao realizar a busca"}, 500
 
+# apaga um filme da tabela de pendentes
 def recusar_filme_pendente(id_pendente):
     query = "delete from filme_pendente where id_pendente = %s"
     banco.executar_query(query, (id_pendente,), commit=True)
     return {"sucesso": True, "mensagem": "filme recusado com sucesso"}, 200
 
+# apaga um filme do catalogo principal (admin)
 def remover_filme_aprovado(id_filme):
     query = "delete from filme where id_filme = %s"
     banco.executar_query(query, (id_filme,), commit=True)
     return {"sucesso": True, "mensagem": "filme removido com sucesso"}, 200
 
+# move um filme pendente para o catalogo principal
 def aprovar_filme_pendente(id_pendente):
-    conexao = banco.conectar_banco()
+    conexao = banco.get_connection_from_pool()
     if conexao is None:
         return {"sucesso": False, "erro": "falha na conexao com banco"}, 500
     cursor = conexao.cursor(dictionary=True)
@@ -158,7 +169,7 @@ def aprovar_filme_pendente(id_pendente):
         cursor.execute("select * from filme_pendente where id_pendente = %s", (id_pendente,))
         filme_pendente = cursor.fetchone()
         if not filme_pendente:
-            return {"sucesso": False, "erro": "filme pendente não encontrado"}, 404
+            return {"sucesso": False, "erro": "filme pendente nao encontrado"}, 404
 
         tempo_de_duracao_str = segundos_para_tempo_str(filme_pendente['tempo_de_duracao'])
         id_diretor = buscar_ou_criar_id(cursor, 'diretor', filme_pendente['diretor_nome'])
@@ -205,6 +216,7 @@ def aprovar_filme_pendente(id_pendente):
         cursor.close()
         conexao.close()
 
+# pega um filme especifico com todos os detalhes
 def buscar_filme_por_id(id_filme):
     query = """
         SELECT 
@@ -226,8 +238,9 @@ def buscar_filme_por_id(id_filme):
         
         return {"sucesso": True, "filme": filme}, 200
     else:
-        return {"sucesso": False, "erro": "Filme não encontrado"}, 404
+        return {"sucesso": False, "erro": "filme nao encontrado"}, 404
 
+# atualiza dados de um filme (admin)
 def atualizar_filme(id_filme, dados):
     try:
         query = """
@@ -249,15 +262,14 @@ def atualizar_filme(id_filme, dados):
             id_filme
         )
         banco.executar_query(query, valores, commit=True)
-        return {"sucesso": True, "mensagem": "Filme atualizado com sucesso"}, 200
+        return {"sucesso": True, "mensagem": "filme atualizado com sucesso"}, 200
     except Exception as e:
         print(f"Erro em atualizar_filme: {e}")
         return {"sucesso": False, "erro": str(e)}, 500
 
 
-
+# salva uma sugestao de edicao (usuario comum)
 def sugerir_edicao_filme(id_filme, dados):
-    """ Salva uma sugestão de edição na tabela edicao_pendente. """
     try:
         query = """
             INSERT INTO edicao_pendente
@@ -274,15 +286,15 @@ def sugerir_edicao_filme(id_filme, dados):
         )
         edicao_id = banco.executar_query(query, valores, commit=True)
         if edicao_id:
-            return {"sucesso": True, "mensagem": "Sugestão de edição enviada para aprovação."}, 201
+            return {"sucesso": True, "mensagem": "sugestao de edicao enviada para aprovacao"}, 201
         else:
-            return {"sucesso": False, "erro": "Falha ao enviar sugestão."}, 500
+            return {"sucesso": False, "erro": "falha ao enviar sugestao"}, 500
     except Exception as e:
         print(f"Erro em sugerir_edicao_filme: {e}")
         return {"sucesso": False, "erro": str(e)}, 500
 
+# pega as edicoes sugeridas para aprovar
 def buscar_edicoes_pendentes():
-    """ Busca todas as edições pendentes com detalhes do filme original. """
     try:
         query = """
             SELECT 
@@ -299,11 +311,11 @@ def buscar_edicoes_pendentes():
         print(f"Erro em buscar_edicoes_pendentes: {e}")
         return {"sucesso": False, "erro": str(e)}, 500
 
+# aplica a edicao sugerida no filme principal
 def aprovar_edicao_pendente(id_edicao):
-    """ Aprova uma edição: atualiza o filme e remove a pendência. """
-    conexao = banco.conectar_banco()
+    conexao = banco.get_connection_from_pool()
     if conexao is None:
-        return {"sucesso": False, "erro": "Falha na conexão com o banco"}, 500
+        return {"sucesso": False, "erro": "falha na conexao com o banco"}, 500
     
     cursor = conexao.cursor(dictionary=True)
     try:
@@ -311,7 +323,7 @@ def aprovar_edicao_pendente(id_edicao):
         cursor.execute("SELECT * FROM edicao_pendente WHERE id_edicao = %s", (id_edicao,))
         edicao = cursor.fetchone()
         if not edicao:
-            return {"sucesso": False, "erro": "Edição pendente não encontrada"}, 404
+            return {"sucesso": False, "erro": "edicao pendente nao encontrada"}, 404
 
    
         query_update = """
@@ -338,7 +350,7 @@ def aprovar_edicao_pendente(id_edicao):
         cursor.execute("DELETE FROM edicao_pendente WHERE id_edicao = %s", (id_edicao,))
         
         conexao.commit()
-        return {"sucesso": True, "mensagem": "Edição aprovada e filme atualizado."}, 200
+        return {"sucesso": True, "mensagem": "edicao aprovada e filme atualizado"}, 200
 
     except Exception as e:
         conexao.rollback()
@@ -348,18 +360,19 @@ def aprovar_edicao_pendente(id_edicao):
         cursor.close()
         conexao.close()
 
+# apaga uma sugestao de edicao
 def recusar_edicao_pendente(id_edicao):
-    """ Recusa (apaga) uma sugestão de edição. """
     try:
         query = "DELETE FROM edicao_pendente WHERE id_edicao = %s"
         banco.executar_query(query, (id_edicao,), commit=True)
-        return {"sucesso": True, "mensagem": "Edição recusada com sucesso."}, 200
+        return {"sucesso": True, "mensagem": "edicao recusada com sucesso"}, 200
     except Exception as e:
         print(f"Erro em recusar_edicao_pendente: {e}")
         return {"sucesso": False, "erro": str(e)}, 500
     
+# adiciona filme direto no catalogo (admin)
 def adicionar_filme_direto(dados):
-    conexao = banco.conectar_banco()
+    conexao = banco.get_connection_from_pool()
     if conexao is None:
         return {"sucesso": False, "erro": "falha na conexao com banco"}, 500
     cursor = conexao.cursor(dictionary=True)

@@ -26,12 +26,13 @@ function PainelLogin() {
       if (resposta.ok && dados.sucesso) {
         localStorage.setItem('sessao_usuario', JSON.stringify(dados.usuario));
         localStorage.setItem('tipo_usuario', dados.tipo); 
+        localStorage.setItem('token_jwt', dados.token); 
         navegar('/home'); 
       } else {
         setErro(dados.erro || 'Erro desconhecido');
       }
     } catch (err) {
-      setErro('Erro de conexão. O servidor Python está rodando?');
+      setErro('Erro de conexão. O servidor está rodando?');
     } finally {
       setLoading(false);
     }

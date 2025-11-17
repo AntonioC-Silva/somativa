@@ -19,7 +19,14 @@ function PaginaDetalheFilme() {
     const [erroModal, setErroModal] = useState(null);
     const [loadingModal, setLoadingModal] = useState(false); 
 
-    // Função para carregar os dados do filme
+    const getAuthHeaders = () => {
+        const token = localStorage.getItem('token_jwt');
+        return {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        };
+    };
+
     const carregarFilme = useCallback(async () => {
         setLoading(true);
         setErro(null);
@@ -53,6 +60,7 @@ function PaginaDetalheFilme() {
         evento.preventDefault();
         localStorage.removeItem('sessao_usuario');
         localStorage.removeItem('tipo_usuario');
+        localStorage.removeItem('token_jwt');
         setTipoUsuario(null);
         navegar('/');
     };
@@ -81,7 +89,7 @@ function PaginaDetalheFilme() {
         try {
             const resp = await fetch(`http://localhost:8000/api/filme/${formData.id_filme}`, {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
+                headers: getAuthHeaders(),
                 body: JSON.stringify(formData)
             });
             const resultado = await resp.json();

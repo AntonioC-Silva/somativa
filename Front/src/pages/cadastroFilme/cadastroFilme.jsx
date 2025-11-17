@@ -86,8 +86,17 @@ function CadastroFilme() {
     evento.preventDefault();
     localStorage.removeItem('sessao_usuario');
     localStorage.removeItem('tipo_usuario');
+    localStorage.removeItem('token_jwt');
     setTipoUsuario(null);
     navegar('/');
+  };
+
+  const getAuthHeaders = () => {
+      const token = localStorage.getItem('token_jwt');
+      return {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      };
   };
 
   const lidarComEnvio = async (evento) => {
@@ -124,6 +133,10 @@ function CadastroFilme() {
       ? 'http://localhost:8000/api/filme/admin-add' 
       : 'http://localhost:8000/api/filmes'; 
 
+    const headers = is_admin
+      ? getAuthHeaders()
+      : { 'Content-Type': 'application/json' };
+
     const mensagemSucesso = is_admin
       ? 'Filme cadastrado com sucesso no catálogo!'
       : 'Filme enviado para aprovação!';
@@ -132,9 +145,7 @@ function CadastroFilme() {
     try {
       const resposta = await fetch(url, { 
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: headers,
         body: JSON.stringify(dadosFilme),
       });
 

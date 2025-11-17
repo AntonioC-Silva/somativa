@@ -7,7 +7,8 @@ import "./home.css"
 import ListaFilmes from '../../components/listaFilme/listaFilmes';
 
 function PaginaHome() {
-    const [filmesDestaque, setFilmesDestaque] = useState([]);
+    const [filmesParaCarrossel, setFilmesParaCarrossel] = useState([]);
+    const [outrosFilmes, setOutrosFilmes] = useState([]);
     const [filmesAcao, setFilmesAcao] = useState([]);
     const [filmesSciFi, setFilmesSciFi] = useState([]);
     
@@ -15,6 +16,8 @@ function PaginaHome() {
     const [erro, setErro] = useState(null);
     const [tipoUsuario, setTipoUsuario] = useState(null);
     const navegar = useNavigate();
+
+    const IDS_CARROSSEL = [1, 2, 7]; 
 
     useEffect(() => {
         const tipo = localStorage.getItem('tipo_usuario');
@@ -43,14 +46,29 @@ function PaginaHome() {
                 const dadosSciFi = await respSciFi.json();
 
                 if (dadosDestaques.sucesso) {
-                    setFilmesDestaque(dadosDestaques.filmes.map(filme => ({
+                    
+                    const todosOsFilmes = dadosDestaques.filmes.map(filme => ({
                         id: filme.id_filme,
                         titulo: filme.titulo,
                         descricao: filme.sinopse,
                         urlImagem: filme.poster,
                         urlCapa: filme.poster,
                         genero: filme.generos
-                    })));
+                    }));
+
+                    const filmesCarrossel = [];
+                    const filmesRestantes = [];
+
+                    todosOsFilmes.forEach(filme => {
+                        if (IDS_CARROSSEL.includes(filme.id)) {
+                            filmesCarrossel.push(filme);
+                        } else {
+                            filmesRestantes.push(filme);
+                        }
+                    });
+
+                    setFilmesParaCarrossel(filmesCarrossel);
+                    setOutrosFilmes(filmesRestantes);
                 }
 
                 if (dadosAcao.sucesso) {
@@ -85,6 +103,7 @@ function PaginaHome() {
         evento.preventDefault();
         localStorage.removeItem('sessao_usuario');
         localStorage.removeItem('tipo_usuario');
+        localStorage.removeItem('token_jwt');
         setTipoUsuario(null);
         navegar('/');
     };
@@ -96,7 +115,7 @@ function PaginaHome() {
                 aoSair={lidarComLogout} 
             />
             
-            <CarrosselHome destaques={filmesDestaque.slice(0, 3)} loading={loading} />
+            <CarrosselHome destaques={filmesParaCarrossel} loading={loading} />
             
             <main className='home'>
                 
@@ -107,7 +126,7 @@ function PaginaHome() {
                     <>
                         <ListaFilmes 
                             tituloSecao="Destaques" 
-                            listaFilmes={filmesDestaque.slice(3, 13)} 
+                            listaFilmes={outrosFilmes.slice(0, 10)} 
                         />
 
                         <ListaFilmes 

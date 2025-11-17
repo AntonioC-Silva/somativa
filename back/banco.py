@@ -1,24 +1,41 @@
 import mysql.connector
+from mysql.connector import pooling
 from decimal import Decimal
 import json
 
-CONFIG_BANCO = {
+db_config = {
     'host': "localhost",
     'user': "root",
     'password': "senai", 
     'database': "webserver"
 }
 
-def conectar_banco():
+# cria o pool de conexoes (singleton) na inicializacao
+try:
+    db_pool = pooling.MySQLConnectionPool(pool_name="webserver_pool",
+                                          pool_size=5,
+                                          **db_config)
+    print("pool de conexoes singleton criado com sucesso")
+except mysql.connector.Error as err:
+    print(f"erro ao criar o pool de conexoes: {err}")
+    db_pool = None
+
+# pega uma conexao livre do pool
+def get_connection_from_pool():
+    if db_pool is None:
+        print("erro: pool de conexoes nao esta disponivel")
+        return None
     try:
-        return mysql.connector.connect(**CONFIG_BANCO)
+        return db_pool.get_connection()
     except mysql.connector.Error as err:
-        print(f"Erro ao conectar ao banco: {err}")
+        print(f"erro ao obter conexao do pool: {err}")
         return None
 
+# executa qualquer query sql usando o pool de conexoes
 def executar_query(query, params=None, fetch_one=False, fetch_all=False, commit=False):
-    conexao = conectar_banco()
+    conexao = get_connection_from_pool()
     if conexao is None:
+        print("falha ao obter conexao para a query")
         return None
         
     cursor = conexao.cursor(dictionary=True)
@@ -38,14 +55,17 @@ def executar_query(query, params=None, fetch_one=False, fetch_all=False, commit=
         return resultado
         
     except mysql.connector.Error as err:
-        print(f"Erro na query: {err}")
+        print(f"erro na query: {err}")
         conexao.rollback()
         return None
     finally:
-        cursor.close()
-        conexao.close()
+        # devolve a conexao para o pool
+        if conexao:
+            cursor.close()
+            conexao.close()
 
+# converte o tipo 'decimal' do mysql para float no json
 def conversor_json(o):
     if isinstance(o, Decimal):
         return float(o)
-    raise TypeError(f"Objeto do tipo {o.__class__.__name__} não é serializável em JSON")
+    raise TypeError(f"objeto do tipo {o.__class__.__name__} nao e serializavel em json")
