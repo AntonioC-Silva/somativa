@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './modalEdicao.css';
 
-// 1. Recebe 'loading' como prop
+
 function ModalEdicao({ filme, aoFechar, aoSalvar, erro, loading }) {
     
     const [formData, setFormData] = useState({});
-    // 2. Remove o state de loading interno
-    // const [loading, setLoading] = useState(false); 
+
     const modalRef = useRef(null);
 
     useEffect(() => {
@@ -24,7 +23,7 @@ function ModalEdicao({ filme, aoFechar, aoSalvar, erro, loading }) {
         }
     }, [filme]);
 
-    // Efeito de acessibilidade (Focus Trap e 'Esc')
+
     useEffect(() => {
         if (!filme || !modalRef.current) return;
         const modalNode = modalRef.current;
@@ -70,15 +69,15 @@ function ModalEdicao({ filme, aoFechar, aoSalvar, erro, loading }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // 3. A função pai (aoSalvar) agora controla o loading
+
         await aoSalvar(formData);
     };
 
     if (!filme) return null;
 
     return (
-        <div className="modalOverlay" onClick={aoFechar}>
-            <div 
+        <article className="modalOverlay" onClick={aoFechar}>
+            <article 
                 className="modalConteudo" 
                 onClick={(e) => e.stopPropagation()} 
                 ref={modalRef}
@@ -143,16 +142,16 @@ function ModalEdicao({ filme, aoFechar, aoSalvar, erro, loading }) {
                         required
                     ></textarea>
                     
-                    <div className="campoReadOnly">
+                    <article className="campoReadOnly">
                         <strong>Diretor:</strong> {formData.diretor_nome}
-                    </div>
-                    <div className="campoReadOnly">
+                    </article>
+                    <article className="campoReadOnly">
                         <strong>Gêneros:</strong> {formData.generos}
-                    </div>
+                    </article>
 
                     {erro && <p className="formErro">{erro}</p>}
 
-                    <div className="modalBotoes">
+                    <article className="modalBotoes">
                         <button typea="button" className="botaoAcao recusar" onClick={aoFechar} disabled={loading}>
                             Cancelar
                         </button>
@@ -160,10 +159,10 @@ function ModalEdicao({ filme, aoFechar, aoSalvar, erro, loading }) {
                             {/* 4. Usa o prop 'loading' */}
                             {loading ? 'Enviando...' : 'Salvar Alterações'}
                         </button>
-                    </div>
+                    </article>
                 </form>
-            </div>
-        </div>
+            </article>
+        </article>
     );
 }
 

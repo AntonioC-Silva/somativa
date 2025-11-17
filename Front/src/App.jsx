@@ -8,7 +8,6 @@ import PaginaCategoria from './pages/categorias/categoria.jsx'
 import CadastroFilme from './pages/cadastroFilme/cadastroFilme.jsx'
 import PaginaGerenciarFilmes from './pages/gerenciarFilmes/gerenciarFilmes.jsx'
 import PaginaSobreNos from './pages/sobreNos/sobreNos.jsx'
-// Importação da nova página de detalhes
 import PaginaDetalheFilme from './pages/detalhe/detalheFilme.jsx'
 
 
@@ -23,8 +22,6 @@ function App() {
       <Route path="/adicionarFilmes" element={<CadastroFilme />} />
       <Route path="/gerenciarFilmes" element={<PaginaGerenciarFilmes />} />
       <Route path="/sobre" element={<PaginaSobreNos />} />
-
-      {/* Rota da página de detalhes */}
       <Route path="/filme/:id" element={<PaginaDetalheFilme />} />
     </Routes>
   )

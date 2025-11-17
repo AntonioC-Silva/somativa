@@ -28,28 +28,28 @@ function SelecaoCustomizada({ opcoes, valor, aoMudar, placeholder }) {
   };
 
   return (
-    <div className="containerSelecaoCustom">
-      <div 
+    <article className="containerSelecaoCustom">
+      <article 
         className={`valorSelecaoCustom ${valor.length === 0 ? 'placeholder' : ''}`}
         onClick={lidarComClique}
         tabIndex={0}
       >
         {obterTextoExibido()}
-      </div>
+      </article>
       {estaAberto && (
-        <div className="opcoesSelecaoCustom">
+        <article className="opcoesSelecaoCustom">
           {opcoes.map((opcao) => (
-            <div 
+            <article 
               key={opcao}
               className={`opcaoSelecaoCustom ${valor.includes(opcao) ? 'selecionado' : ''}`}
               onClick={() => lidarCliqueOpcao(opcao)}
             >
               {opcao}
-            </div>
+            </article>
           ))}
-        </div>
+        </article>
       )}
-    </div>
+    </article>
   );
 }
 
@@ -70,7 +70,7 @@ function CadastroFilme() {
   const [tipoUsuario, setTipoUsuario] = useState(null);
   const navegar = useNavigate();
 
-  // Define se é admin (para textos dinâmicos)
+
   const is_admin = tipoUsuario === 'adm';
 
   useEffect(() => {
@@ -114,24 +114,23 @@ function CadastroFilme() {
       ano: parseInt(ano, 10),
       elenco: elenco,
       genero: generosSelecionados.join(', '), 
-      nomeProdutora: produtora, // Este campo não está sendo usado no backend
+      nomeProdutora: produtora, 
       poster: posterUrl,
       sinopse: sinopse,
     };
 
-    // --- LÓGICA DE ROTA MODIFICADA ---
-    // Define o endpoint e a mensagem de sucesso com base no tipo de usuário
+
     const url = is_admin
-      ? 'http://localhost:8000/api/filme/admin-add' // Rota do Admin (Cadastro Direto)
-      : 'http://localhost:8000/api/filmes'; // Rota do Usuário Comum (Pendente)
+      ? 'http://localhost:8000/api/filme/admin-add' 
+      : 'http://localhost:8000/api/filmes'; 
 
     const mensagemSucesso = is_admin
       ? 'Filme cadastrado com sucesso no catálogo!'
       : 'Filme enviado para aprovação!';
-    // --- FIM DA LÓGICA ---
+ 
 
     try {
-      const resposta = await fetch(url, { // Usa a URL dinâmica
+      const resposta = await fetch(url, { 
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -142,7 +141,7 @@ function CadastroFilme() {
       const resultado = await resposta.json();
 
       if (resposta.ok && resultado.sucesso) {
-        setMensagem(mensagemSucesso); // Usa a mensagem de sucesso dinâmica
+        setMensagem(mensagemSucesso); 
         setTitulo('');
         setOrcamento('');
         setDiretor('');
@@ -170,7 +169,7 @@ function CadastroFilme() {
 
       <form className="formularioFilme" onSubmit={lidarComEnvio}>
         <fieldset className="grupoCampos" disabled={loading}>
-          {/* Título dinâmico */}
+     
           <legend className="tituloFormulario">
             {is_admin ? 'Cadastrar Novo Filme (Admin)' : 'Sugerir Novo Filme'}
           </legend>
@@ -285,7 +284,7 @@ function CadastroFilme() {
           ></textarea>
           
           {mensagem && (
-            <div 
+            <article 
               className="mensagemFormulario" 
               style={{
                 color: mensagem.startsWith('Erro') ? '#ff6b6b' : '#51cf66',
@@ -295,10 +294,10 @@ function CadastroFilme() {
               }}
             >
               {mensagem}
-            </div>
+            </article>
           )}
 
-          {/* Botão dinâmico */}
+      
           <button type="submit" className="botaoEnvio" disabled={loading}>
             {loading ? 'Enviando...' : (is_admin ? 'Cadastrar Filme no Catálogo' : 'Enviar Pedido de Cadastro')}
           </button>

@@ -1,5 +1,5 @@
 .navegacaoFiltros {
-  margin-top: 60px; /* Espaço para o NavBar fixo */
+  margin-top: 60px;
   background-color: #000000;
   padding: 1rem 2rem;
   border-bottom: 2px solid #333;
@@ -64,8 +64,8 @@ details[open] .sumarioFiltro::after {
 .conteudoInput {
   position: absolute;
   top: 120%;
-  left: 50%; /* Centraliza o dropdown */
-  transform: translateX(-50%); /* Centraliza o dropdown */
+  left: 50%; 
+  transform: translateX(-50%); 
   background-color: #1a1a1a;
   border: 1px solid #333;
   padding: 1rem;
@@ -124,7 +124,7 @@ details[open] .sumarioFiltro::after {
   outline-offset: 2px;
 }
 
-/* --- NOVOS ESTILOS --- */
+
 
 .botaoAplicar {
   background: linear-gradient(to right, #0C38C9, #8D0B99);

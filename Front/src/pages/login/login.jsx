@@ -6,7 +6,6 @@ import './login.css';
 function PaginaLogin() {
   const [loginAtivo, setloginAtivo] = useState(false);
 
-  // Esta função é chamada quando a animação da intro termina
   const terminouIntro = () => {
     setTimeout(() => {
       setloginAtivo(true);

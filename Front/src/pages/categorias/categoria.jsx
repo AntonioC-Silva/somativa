@@ -65,23 +65,22 @@ function PaginaCategoria(){
             );
         }
         
-        // --- LÓGICA DE GÊNERO MODIFICADA (AGORA É "E" / "AND") ---
+ 
         if (generoQuery) {
-            // 1. Transforma a query "Ação,Comédia" em ["ação", "comédia"]
             const generosParaFiltrar = generoQuery.toLowerCase().split(',').filter(Boolean).map(g => g.trim());
             
             if (generosParaFiltrar.length > 0) {
                 filmesTemp = filmesTemp.filter(f => {
                     if (!f.generos) return false;
-                    // 2. Transforma os gêneros do filme "Ação, Aventura" em ["ação", "aventura"]
+              
                     const generosDoFilme = f.generos.toLowerCase().split(',').map(g => g.trim());
                     
-                    // 3. Verifica se TODOS os gêneros do filtro estão incluídos nos gêneros do filme (lógica E)
+              
                     return generosParaFiltrar.every(generoFiltro => generosDoFilme.includes(generoFiltro));
                 });
             }
         }
-        // --- FIM DA MODIFICAÇÃO ---
+   
 
         if (anoQuery) {
             filmesTemp = filmesTemp.filter(f => 
@@ -125,7 +124,7 @@ function PaginaCategoria(){
     };
 
     return(
-        <div className="paginaCategoria">
+        <article className="paginaCategoria">
             <NavBar tipoUsuario={tipoUsuario} aoSair={lidarComLogout} />
             <Filtros 
                 valoresIniciais={{
@@ -143,7 +142,7 @@ function PaginaCategoria(){
                 {erro && <p className="mensagemErro">Erro: {erro}</p>}
                 
                 {!loading && !erro && (
-                    <div className="gradeFilmes">
+                    <article className="gradeFilmes">
                         {filmesFiltrados.length > 0 ? (
                             filmesFiltrados.map(filme => (
                                 <CardFilme key={filme.id_filme} filme={{
@@ -155,12 +154,12 @@ function PaginaCategoria(){
                         ) : (
                             <p className="mensagemVazio">Nenhum filme encontrado para estes filtros.</p>
                         )}
-                    </div>
+                    </article>
                 )}
             </main>
             
             <Footer/>
-        </div>
+        </article>
     )
 }
 

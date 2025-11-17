@@ -20,15 +20,15 @@
     position: static;
 }
 
-/* --- Estilização das Setas Personalizadas (BLINDADA) --- */
+
 
 .setaPersonalizada {
     position: absolute !important;
-    top: 50% !important;             /* Posiciona o topo da seta exatamente no meio do container */
-    transform: translateY(-50%) !important; /* Puxa a seta 50% da sua própria altura para cima, centralizando perfeitamente */
+    top: 50% !important;          
+    transform: translateY(-50%) !important; 
     z-index: 10;
     width: 60px;
-    height: 60px; /* Definimos uma altura fixa para evitar que ela tente ocupar 100% e cause bugs */
+    height: 60px; 
     cursor: pointer;
     display: flex !important;
     align-items: center;
@@ -38,21 +38,21 @@
     background: transparent !important;
     border: none !important;
     outline: none !important;
-    transition: color 0.2s ease, transform 0.2s ease; /* Adicionamos transform na transição */
+    transition: color 0.2s ease, transform 0.2s ease;
 }
 
-/* Feedback visual no hover - Mantém a centralização e adiciona escala */
+
 .setaPersonalizada:hover {
     color: #CD39E7;
     transform: translateY(-50%) scale(1.2) !important; 
 }
 
-/* Feedback visual no clique - Mantém a centralização e reseta a escala */
+
 .setaPersonalizada:active {
     transform: translateY(-50%) scale(1.0) !important;
 }
 
-/* Posicionamento fixo nas laterais */
+
 .setaAnterior {
     left: 0 !important;
 }
@@ -61,7 +61,7 @@
     right: 0 !important;
 }
 
-/* Estilo do ícone */
+
 .setaPersonalizada i {
     font-size: 3rem;
     font-weight: bold;

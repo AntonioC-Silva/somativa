@@ -14,7 +14,7 @@ function Filtros({ valoresIniciais, aoAtualizarFiltros }) {
     const [tempDiretor, setTempDiretor] = useState(valoresIniciais.diretor || '');
     const [tempAtor, setTempAtor] = useState(valoresIniciais.ator || '');
     
-    // MODIFICADO: Estado para múltiplos gêneros (array)
+
     const [generosSel, setGenerosSel] = useState(
         valoresIniciais.genero ? valoresIniciais.genero.split(',').filter(Boolean) : []
     );
@@ -23,7 +23,6 @@ function Filtros({ valoresIniciais, aoAtualizarFiltros }) {
         setTempAno(valoresIniciais.ano || '');
         setTempDiretor(valoresIniciais.diretor || '');
         setTempAtor(valoresIniciais.ator || '');
-        // MODIFICADO: Sincroniza o estado do array com os valores iniciais
         setGenerosSel(
             valoresIniciais.genero ? valoresIniciais.genero.split(',').filter(Boolean) : []
         );
@@ -57,7 +56,7 @@ function Filtros({ valoresIniciais, aoAtualizarFiltros }) {
         setFiltroAberto(null); 
     };
 
-    // MODIFICADO: Lógica para checkbox (múltipla seleção)
+
     const lidarMudancaGenero = (e) => {
         const { value, checked } = e.target;
         let novosGeneros;
@@ -72,7 +71,7 @@ function Filtros({ valoresIniciais, aoAtualizarFiltros }) {
         aoAtualizarFiltros({ ...valoresIniciais, genero: novosGeneros.join(',') });
     };
 
-    // MODIFICADO: Limpa o array de gêneros
+
     const lidarLimparGenero = (e) => {
         e.preventDefault();
         setGenerosSel([]);
@@ -95,11 +94,11 @@ function Filtros({ valoresIniciais, aoAtualizarFiltros }) {
                             {generosDisponiveis.map(genero => (
                                 <label key={genero} className="rotuloOpcao">
                                 <input 
-                                    type="checkbox" // MODIFICADO: de 'radio' para 'checkbox'
+                                    type="checkbox" 
                                     name="genero" 
                                     value={genero}
-                                    checked={generosSel.includes(genero)} // MODIFICADO: verifica se 'includes' no array
-                                    onChange={lidarMudancaGenero} // MODIFICADO: usa a nova função
+                                    checked={generosSel.includes(genero)} 
+                                    onChange={lidarMudancaGenero} 
                                 /> 
                                 {genero}
                                 </label>
@@ -111,13 +110,13 @@ function Filtros({ valoresIniciais, aoAtualizarFiltros }) {
                     </details>
                 </li>
 
-                {/* O restante dos filtros (Ano, Diretor, Ator) permanece igual */}
+
                 <li className="itemFiltro">
                     <details className="detalhesFiltro" open={filtroAberto === 'ano'}>
                         <summary className="sumarioFiltro" onClick={(e) => alternarFiltro(e, 'ano')}>
                         Ano
                         </summary>
-                        <div className="conteudoInput">
+                        <article className="conteudoInput">
                         <label htmlFor="filtroAno" className="rotuloInput">Filtrar por Ano:</label>
                         <input 
                             type="text" 
@@ -131,7 +130,7 @@ function Filtros({ valoresIniciais, aoAtualizarFiltros }) {
                             inputMode="numeric" 
                         />
                         <button className="botaoAplicar" onClick={() => lidarAplicarFiltro('ano')}>OK</button>
-                        </div>
+                        </article>
                     </details>
                 </li>
 
@@ -140,7 +139,7 @@ function Filtros({ valoresIniciais, aoAtualizarFiltros }) {
                         <summary className="sumarioFiltro" onClick={(e) => alternarFiltro(e, 'diretor')}>
                         Diretor
                         </summary>
-                        <div className="conteudoInput">
+                        <article className="conteudoInput">
                         <label htmlFor="filtroDiretor" className="rotuloInput">Filtrar por Diretor:</label>
                         <input 
                             type="text" 
@@ -152,7 +151,7 @@ function Filtros({ valoresIniciais, aoAtualizarFiltros }) {
                             placeholder="Ex: Nolan" 
                         />
                         <button className="botaoAplicar" onClick={() => lidarAplicarFiltro('diretor')}>OK</button>
-                        </div>
+                        </article>
                     </details>
                 </li>
 
@@ -161,7 +160,7 @@ function Filtros({ valoresIniciais, aoAtualizarFiltros }) {
                         <summary className="sumarioFiltro" onClick={(e) => alternarFiltro(e, 'ator')}>
                         Ator (Elenco)
                         </summary>
-                        <div className="conteudoInput">
+                        <article className="conteudoInput">
                         <label htmlFor="filtroAtor" className="rotuloInput">Filtrar por Ator:</label>
                         <input 
                             type="text" 
@@ -173,7 +172,7 @@ function Filtros({ valoresIniciais, aoAtualizarFiltros }) {
                             placeholder="Ex: DiCaprio" 
                         />
                         <button className="botaoAplicar" onClick={() => lidarAplicarFiltro('ator')}>OK</button>
-                        </div>
+                        </article>
                     </details>
                 </li>
 

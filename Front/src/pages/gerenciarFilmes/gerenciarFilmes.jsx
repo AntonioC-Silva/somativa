@@ -10,7 +10,7 @@ function PaginaGerenciarFilmes() {
     
     const [filmesPendentes, setFilmesPendentes] = useState([]);
     const [filmesAprovados, setFilmesAprovados] = useState([]);
-    const [edicoesPendentes, setEdicoesPendentes] = useState([]); // NOVO ESTADO
+    const [edicoesPendentes, setEdicoesPendentes] = useState([]); 
     
     const [loading, setLoading] = useState(true);
     const [erro, setErro] = useState(null);
@@ -25,16 +25,15 @@ function PaginaGerenciarFilmes() {
         setLoading(true);
         setErro(null);
         try {
-            // MODIFICADO: Adiciona a busca por edições pendentes
             const [respPendentes, respAprovados, respEdicoes] = await Promise.all([
                 fetch('http://localhost:8000/api/filmes/pendentes'),
                 fetch('http://localhost:8000/api/filmes'),
-                fetch('http://localhost:8000/api/filmes/edicoes-pendentes') // NOVA CHAMADA
+                fetch('http://localhost:8000/api/filmes/edicoes-pendentes') 
             ]);
 
             const dadosPendentes = await respPendentes.json();
             const dadosAprovados = await respAprovados.json();
-            const dadosEdicoes = await respEdicoes.json(); // NOVOS DADOS
+            const dadosEdicoes = await respEdicoes.json(); 
 
             if (dadosPendentes.sucesso) {
                 setFilmesPendentes(dadosPendentes.filmes);
@@ -48,7 +47,7 @@ function PaginaGerenciarFilmes() {
                 setErro(erro => erro ? `${erro}, ${dadosAprovados.erro}` : dadosAprovados.erro || 'Falha ao buscar filmes aprovados');
             }
 
-            // NOVO BLOCO
+         
             if (dadosEdicoes.sucesso) {
                 setEdicoesPendentes(dadosEdicoes.edicoes);
             } else {
@@ -109,13 +108,13 @@ function PaginaGerenciarFilmes() {
         }
     };
 
-    // --- NOVAS FUNÇÕES PARA GERENCIAR EDIÇÕES ---
+  
     
     const lidarRecusarEdicao = async (id_edicao) => {
         if (!window.confirm('Tem certeza que deseja recusar esta SUGESTÃO DE EDIÇÃO?')) return;
         try {
             await fetch(`http://localhost:8000/api/filme/edicao/recusar/${id_edicao}`, { method: 'DELETE' });
-            carregarDados(); // Recarrega tudo
+            carregarDados(); 
         } catch (err) {
             setErro('Falha ao recusar edição.');
         }
@@ -125,7 +124,7 @@ function PaginaGerenciarFilmes() {
         if (!window.confirm('APROVAR esta edição irá sobrescrever os dados atuais do filme. Continuar?')) return;
         try {
             await fetch(`http://localhost:8000/api/filme/edicao/aprovar/${id_edicao}`, { method: 'POST' });
-            carregarDados(); // Recarrega tudo
+            carregarDados(); 
         } catch (err) {
             setErro('Falha ao aprovar edição.');
         }
@@ -184,7 +183,7 @@ function PaginaGerenciarFilmes() {
                 {!loading && !erro && filmesPendentes.length === 0 && (
                     <p>Nenhum filme pendente.</p>
                 )}
-                <div className="listaGerenciar">
+                <article className="listaGerenciar">
                     {filmesPendentes.map(filme => (
                         <CardGerenciamento 
                             key={`pendente-${filme.id_pendente}`}
@@ -194,10 +193,10 @@ function PaginaGerenciarFilmes() {
                             aoAprovar={() => lidarComAprovar(filme.id_pendente)}
                         />
                     ))}
-                </div>
+                </article>
             </section>
             
-            {/* NOVA SEÇÃO - EDIÇÕES PENDENTES */}
+       
             <section className="secaoGerenciar">
                 <h2 className="tituloFormulario">Sugestões de Edição Pendentes</h2>
                 {loading && <p>Carregando...</p>}
@@ -205,18 +204,17 @@ function PaginaGerenciarFilmes() {
                 {!loading && !erro && edicoesPendentes.length === 0 && (
                     <p>Nenhuma sugestão de edição pendente.</p>
                 )}
-                <div className="listaGerenciar">
+                <article className="listaGerenciar">
                     {edicoesPendentes.map(edicao => (
                         <CardGerenciamento 
                             key={`edicao-${edicao.id_edicao}`}
                             filme={edicao} 
                             tipo="edicao_pendente"
-                            // Passa as novas funções
                             aoRecusar={() => lidarRecusarEdicao(edicao.id_edicao)}
                             aoAprovar={() => lidarAprovarEdicao(edicao.id_edicao)}
                         />
                     ))}
-                </div>
+                </article>
             </section>
             
             <section className="secaoGerenciar">
@@ -225,7 +223,7 @@ function PaginaGerenciarFilmes() {
                 {!loading && !erro && filmesAprovados.length === 0 && (
                     <p>Nenhum filme aprovado.</p>
                 )}
-                <div className="listaGerenciar">
+                <article className="listaGerenciar">
                     {filmesAprovados.map(filme => (
                         <CardGerenciamento 
                             key={`aprovado-${filme.id_filme}`}
@@ -235,7 +233,7 @@ function PaginaGerenciarFilmes() {
                             aoEditar={() => lidarAbrirModalEditar(filme)}
                         />
                     ))}
-                </div>
+                </article>
             </section>
 
             <Footer />

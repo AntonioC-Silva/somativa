@@ -1,18 +1,18 @@
-/* Adicione este novo seletor ao final do arquivo */
+
 .linkCardFilme {
-    text-decoration: none; /* Remove sublinhado do link */
-    color: inherit;       /* Faz o link herdar a cor do texto pai */
-    display: block;       /* Garante que o link ocupe o espaço do card */
+    text-decoration: none;
+    color: inherit;       
+    display: block;      
 }
 
 .cardFilme {
-    padding: 10px; /* Espaço entre os cards no carrossel */
+    padding: 10px; 
     transition: transform 0.3s ease;
     cursor: pointer;
 }
 
 .cardFilme:hover {
-    transform: scale(1.05); /* Efeito de "pop" igual Netflix */
+    transform: scale(1.05); 
 }
 
 .poster {
@@ -23,10 +23,10 @@
 
 .imagemCapa {
     width: 100%;
-    aspect-ratio: 2/3; /* Mantém proporção de poster padrão */
+    aspect-ratio: 2/3; 
     object-fit: cover;
     border-radius: 4px;
-    display: block; /* Remove espaços fantasmas abaixo da imagem */
+    display: block; 
 }
 
 .tituloFilme {
@@ -36,6 +36,6 @@
     font-weight: 500;
     white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis; /* Adiciona "..." se o nome for muito longo */
-    text-align: center; /* Conforme seu pedido para ficar embaixo centralizado */
+    text-overflow: ellipsis; 
+    text-align: center; 
 }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import Painel from '../../components/painel/painel.jsx'; // Importamos o Painel
+import Painel from '../../components/painel/painel.jsx'; 
 import CadastroPainel from "../../components/cadastroPainel/cadastro.jsx";
-import './cadastro.css'; // Importamos o NOVO CSS de cadastro
+import './cadastro.css'; 
 
 function PaginaCadastro() {
   const [cadastroAtivo, setCadastroAtivo] = useState(false);

@@ -1,7 +1,7 @@
 .paginaDetalhe {
     background-color: #141414;
     color: #fff;
-    padding-top: 100px; /* 60px do NavBar + 40px de espaço */
+    padding-top: 100px; 
     padding-bottom: 40px;
     min-height: 80vh;
     display: flex;
@@ -129,7 +129,7 @@
     opacity: 0.8;
 }
 
-/* Responsividade */
+
 @media (max-width: 900px) {
     .detalheContainer {
         flex-direction: column;

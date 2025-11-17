@@ -6,7 +6,7 @@ function CardGerenciamento({ filme, tipo, aoAprovar, aoRecusar, aoEditar, aoRemo
     
     const posterPadrao = 'https://placehold.co/300x450/222/fff?text=Poster';
     
-    // --- LÓGICA MODIFICADA PARA ACEITAR 'edicao_pendente' ---
+
     let titulo, ano, sinopse, elenco, generos, diretor;
 
     if (tipo === 'edicao_pendente') {
@@ -15,10 +15,10 @@ function CardGerenciamento({ filme, tipo, aoAprovar, aoRecusar, aoEditar, aoRemo
         ano = filme.ano;
         sinopse = filme.sinopse;
         elenco = filme.elenco;
-        generos = "N/A (Gênero não editável)"; // Gênero não foi incluído na sugestão
-        diretor = "N/A (Diretor não editável)"; // Diretor não foi incluído na sugestão
+        generos = "N/A (Gênero não editável)"; 
+        diretor = "N/A (Diretor não editável)";
     } else {
-        // Dados de um filme (pendente ou aprovado)
+
         titulo = filme.titulo;
         ano = filme.ano;
         sinopse = filme.sinopse;
@@ -28,7 +28,7 @@ function CardGerenciamento({ filme, tipo, aoAprovar, aoRecusar, aoEditar, aoRemo
             ? `${filme.diretor_nome || ''} ${filme.diretor_sobrenome || ''}`.trim()
             : (filme.diretor_nome || 'N/A');
     }
-    // --- FIM DA LÓGICA MODIFICADA ---
+
 
     return (
         <article className={`cardGerenciamento ${tipo === 'edicao_pendente' ? 'cardEdicao' : ''}`}>
@@ -41,13 +41,11 @@ function CardGerenciamento({ filme, tipo, aoAprovar, aoRecusar, aoEditar, aoRemo
             </figure>
             <section className="cardInfo">
                 <header>
-                    {/* MODIFICADO: Usa a variável 'titulo' */}
                     <h3>{titulo}</h3> 
                     <p className="infoAno">{ano}</p>
                 </header>
                 <p className="infoSinopse">{sinopse}</p>
                 <footer className="infoDetalhes">
-                    {/* MODIFICADO: Esconde detalhes não editáveis para 'edicao_pendente' */}
                     {tipo !== 'edicao_pendente' && (
                         <p><strong>Diretor:</strong> {diretor}</p>
                     )}
@@ -56,7 +54,6 @@ function CardGerenciamento({ filme, tipo, aoAprovar, aoRecusar, aoEditar, aoRemo
                 </footer>
             </section>
             
-            {/* MODIFICADO: Lógica de botões para os 3 tipos */}
             {tipo === 'pendente' || tipo === 'edicao_pendente' ? (
                 <nav className="cardAcoes">
                     <button 
@@ -76,7 +73,7 @@ function CardGerenciamento({ filme, tipo, aoAprovar, aoRecusar, aoEditar, aoRemo
                         Recusar
                     </button>
                 </nav>
-            ) : ( // tipo === 'aprovado'
+            ) : (
                 <nav className="cardAcoes">
                     <button 
                         className="botaoAcao editar" 

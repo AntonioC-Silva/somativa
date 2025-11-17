@@ -1,8 +1,6 @@
 import React from 'react';
 import Slider from 'react-slick';
 import './carrosselHome.css';
-
-// Estilos necessários para o react-slick
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
@@ -50,18 +48,15 @@ function CarrosselHome() {
                 aria-roledescription="carrossel de conteúdo em destaque"
             >
                 {filmesEmDestaque.map((filme) => (
-                    // <article> é semântico para um item de conteúdo independente
                     <article className="slideDestaque" key={filme.id}>
-                        {/* <figure> é usado para a imagem de fundo com descrição acessível */}
+
                         <figure 
                             className="fundoDestaque" 
                             role="img" 
                             aria-label={`Pôster do filme: ${filme.titulo}`}
                             style={{ backgroundImage: `url(${filme.urlImagem})` }}
                         >
-                            {/* <main> para o conteúdo principal do destaque */}
                             <main className="conteudoDestaque">
-                                {/* <span> substitui o <div> para o overlay (camada de escurecimento) */}
                                 <span className="camadaEscura" /> 
                                 <section className="textoDestaque">
                                     <h1>{filme.titulo}</h1>
