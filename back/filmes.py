@@ -254,7 +254,7 @@ def atualizar_filme(id_filme, dados):
         print(f"Erro em atualizar_filme: {e}")
         return {"sucesso": False, "erro": str(e)}, 500
 
-# ... (todas as suas funções existentes, como atualizar_filme, terminam aqui) ...
+
 
 def sugerir_edicao_filme(id_filme, dados):
     """ Salva uma sugestão de edição na tabela edicao_pendente. """
@@ -307,13 +307,13 @@ def aprovar_edicao_pendente(id_edicao):
     
     cursor = conexao.cursor(dictionary=True)
     try:
-        # 1. Busca os dados da edição pendente
+
         cursor.execute("SELECT * FROM edicao_pendente WHERE id_edicao = %s", (id_edicao,))
         edicao = cursor.fetchone()
         if not edicao:
             return {"sucesso": False, "erro": "Edição pendente não encontrada"}, 404
 
-        # 2. Atualiza o filme original com os dados da edição
+   
         query_update = """
             UPDATE filme 
             SET 
@@ -334,7 +334,7 @@ def aprovar_edicao_pendente(id_edicao):
         )
         cursor.execute(query_update, valores_update)
 
-        # 3. Remove a edição pendente
+    
         cursor.execute("DELETE FROM edicao_pendente WHERE id_edicao = %s", (id_edicao,))
         
         conexao.commit()

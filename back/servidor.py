@@ -5,7 +5,6 @@ import os
 import re
 from urllib.parse import urlparse, parse_qs
 from decimal import Decimal
-
 import autenticacao
 import filmes
 import banco
