@@ -7,7 +7,8 @@ db_config = {
     'host': "localhost",
     'user': "root",
     'password': "senai", 
-    'database': "webserver"
+    'database': "webserver",
+    'port': 3306
 }
 
 # cria o pool de conexoes (singleton) na inicializacao

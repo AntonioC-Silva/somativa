@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import NavBar from '../../components/navBar/navBar';
+import Footer from '../../components/footer/footer';
 import './cadastroFilme.css';
 
 const generosDisponiveis = [
@@ -256,43 +257,44 @@ function CadastroFilme() {
               />
             </article>
           </section>
-
-          <label htmlFor="poster" className="rotulo">URL do Pôster (Vertical):</label>
-          <input 
-            type="url" 
-            id="poster" 
-            className="campo"
-            placeholder="https://..."
-            value={posterUrl}
-            onChange={(e) => setPosterUrl(e.target.value)}
-            required
-          />
-          <label htmlFor="elenco" className="rotulo">Elenco (separado por vírgula):</label>
-          <input 
-            type="text" 
-            id="elenco" 
-            className="campo"
-            placeholder="Ex: Tim Robbins, Morgan Freeman"
-            value={elenco}
-            onChange={(e) => setElenco(e.target.value)}
-            required
-          />
-          <label htmlFor="genero" className="rotulo">Gênero:</label>
-          <SelecaoCustomizada
-            opcoes={generosDisponiveis}
-            valor={generosSelecionados}
-            aoMudar={setGenerosSelecionados}
-            placeholder="Selecione os gêneros..."
-          />
-          <label htmlFor="sinopse" className="rotulo">Sinopse:</label>
-          <textarea 
-            id="sinopse" 
-            className="campoArea"
-            placeholder="Descreva o filme..."
-            value={sinopse}
-            onChange={(e) => setSinopse(e.target.value)}
-            required
-          ></textarea>
+          <section className='colunaFormulario'>
+            <label htmlFor="poster" className="rotulo">URL do Pôster (Vertical):</label>
+            <input 
+              type="url" 
+              id="poster" 
+              className="campo"
+              placeholder="https://..."
+              value={posterUrl}
+              onChange={(e) => setPosterUrl(e.target.value)}
+              required
+            />
+            <label htmlFor="elenco" className="rotulo">Elenco (separado por vírgula):</label>
+            <input 
+              type="text" 
+              id="elenco" 
+              className="campo"
+              placeholder="Ex: Tim Robbins, Morgan Freeman"
+              value={elenco}
+              onChange={(e) => setElenco(e.target.value)}
+              required
+            />
+            <label htmlFor="genero" className="rotulo">Gênero:</label>
+            <SelecaoCustomizada
+              opcoes={generosDisponiveis}
+              valor={generosSelecionados}
+              aoMudar={setGenerosSelecionados}
+              placeholder="Selecione os gêneros..."
+            />
+            <label htmlFor="sinopse" className="rotulo">Sinopse:</label>
+            <textarea 
+              id="sinopse" 
+              className="campoArea"
+              placeholder="Descreva o filme..."
+              value={sinopse}
+              onChange={(e) => setSinopse(e.target.value)}
+              required
+            ></textarea>
+          </section>
           
           {mensagem && (
             <article 
@@ -314,6 +316,7 @@ function CadastroFilme() {
           </button>
         </fieldset>
       </form>
+      <Footer/>
     </>
   );
 }
