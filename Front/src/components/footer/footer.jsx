@@ -1,6 +1,7 @@
 import './footer.css';
 import 'bootstrap-icons/font/bootstrap-icons.css'; 
 
+
 function Footer() {
     return (
         <footer className="footer">

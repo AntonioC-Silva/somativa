@@ -46,7 +46,7 @@
   display: block; 
   font-size: 0.9rem;
   margin-bottom: -10px;
-  color: #aaa;
+  color: #B1A9A9;
   text-align: left; 
 }
 
@@ -54,7 +54,7 @@
   width: 100%;
   padding: 12px 15px;
   background-color: #000;
-  border: 1px solid #aaa;
+  border: 1px solid #B1A9A9;
   border-radius: 20px;
   color: white;
   font-size: 1rem;
@@ -76,17 +76,17 @@
 
 .campoReadOnly {
     font-size: 0.9rem;
-    color: #ccc;
+    color: #B1A9A9;
     padding: 10px;
     background-color: #1a1a1a;
     border-radius: 8px;
 }
 .campoReadOnly strong {
-    color: #aaa;
+    color: #B1A9A9;
 }
 
 .formErro {
-  color: #ff6b6b; 
+  color: #DD8484; 
   font-size: 0.9rem;
   text-align: center;
   margin: 0;
@@ -117,10 +117,11 @@
 }
 
 .botaoAcao.aprovar {
-    background: linear-gradient(to right, #0C38C9, #8D0B99);
+    background:  #00d8ff;
+    color: #000;
 }
 .botaoAcao.aprovar:hover {
-    opacity: 0.8;
+    background-color: #fff;
 }
 .botaoAcao.aprovar:disabled {
     opacity: 0.5;
@@ -128,10 +129,11 @@
 }
 
 .botaoAcao.recusar {
-    background-color: #555;
+    background-color: #DD8484;
+    color: #000;
 }
 .botaoAcao.recusar:hover {
-    background-color: #ff4d4d;
+    background-color: white;
 }
 .botaoAcao.recusar:disabled {
     opacity: 0.5;
