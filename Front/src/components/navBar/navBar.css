@@ -34,6 +34,7 @@
     margin-right: auto;
     display: flex;
     align-items: center;
+
 }
 
 .campoBusca input[type='search'] {
@@ -41,7 +42,12 @@
     border: none;
     border-radius: 4px;
     min-width: 500px;
+    color: black;
+    background-color: #ffffff;
+    
 }
+
+
 
 .iconeBusca {
     background-color: #ffffff;

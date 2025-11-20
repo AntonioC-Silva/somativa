@@ -52,11 +52,11 @@
 }
 
 .loginForm .enterBotao {
-  background: linear-gradient(to right, #0C38C9, #8D0B99);
+  background: white;
   border: none;
   border-radius: 20px;
   padding: 12px;
-  color: white;
+  color: black;
   font-size: 1.1rem;
   font-weight: bold;
   cursor: pointer;

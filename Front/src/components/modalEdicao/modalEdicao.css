@@ -76,17 +76,17 @@
 
 .campoReadOnly {
     font-size: 0.9rem;
-    color: #B1A9A9;
+    color: #000;
     padding: 10px;
-    background-color: #1a1a1a;
+    background-color: #DBDBDB;
     border-radius: 8px;
 }
 .campoReadOnly strong {
-    color: #B1A9A9;
+    color: #000;
 }
 
 .formErro {
-  color: #DD8484; 
+  color: #B1A9A9; 
   font-size: 0.9rem;
   text-align: center;
   margin: 0;
@@ -120,11 +120,9 @@
     background:  #00d8ff;
     color: #000;
 }
-.botaoAcao.aprovar:hover {
-    background-color: #fff;
-}
+
 .botaoAcao.aprovar:disabled {
-    opacity: 0.5;
+    opacity: 0.1;
     cursor: not-allowed;
 }
 

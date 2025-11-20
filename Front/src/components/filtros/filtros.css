@@ -127,23 +127,23 @@ details[open] .sumarioFiltro::after {
 
 
 .botaoAplicar {
-  background: linear-gradient(to right, #0C38C9, #8D0B99);
+  background: #B1A9A9;
   border: none;
   border-radius: 20px;
   padding: 10px;
-  color: white;
+  color: #1A1919;
   font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
   margin-top: 10px;
 }
 .botaoAplicar:hover {
-  opacity: 0.8;
+  opacity: 0.1;
 }
 
 .botaoLimpar {
-    background-color: #555;
-    color: white;
+    background-color: #B1A9A9;
+    color: #1A1919;
     border: none;
     border-radius: 4px;
     padding: 8px 12px;
@@ -154,7 +154,9 @@ details[open] .sumarioFiltro::after {
 }
 
 .botaoLimpar:hover {
-    background-color: #ff4d4d;
+    background-color: #DD8484;
+    color: #000;
+    
 }
 
 .grupoOpcoes {
