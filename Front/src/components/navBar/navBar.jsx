@@ -68,18 +68,18 @@ function NavBar({ tipoUsuario, aoSair }) {
                         className={`dropdownConteudo ${menuAberto ? 'aberto' : ''}`}
                         role="menu"
                     >
-                        {tipoUsuario === 'adm' ? (
+                        {tipoUsuario === 'adm' && (
                             <li role="none">
                                 <Link to="/gerenciarFilmes" role="menuitem">Gerenciar Filmes</Link>
-                            </li>
-                        ) : (
-                            <li role="none">
-                                <Link to="/adicionarFilmes" role="menuitem">Adicionar Filme</Link>
                             </li>
                         )}
                         
                         <li role="none">
-                            <a href="#" onClick={lidarComLogout} role="menuitem">Sair</a>
+                            <Link to="/adicionarFilmes" role="menuitem">Adicionar Filme</Link>
+                        </li>
+                        
+                        <li role="none">
+                            <Link to="/" onClick={lidarComLogout} role="menuitem">Sair</Link>
                         </li>
                     </ul>
                 </nav>

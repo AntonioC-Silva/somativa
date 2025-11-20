@@ -48,6 +48,7 @@ function PainelLogin() {
           type="text" 
           id="usuario" 
           name="usuario" 
+          placeholder='Usuario'
           value={usuario}
           onChange={(e) => setUsuario(e.target.value)}
           required
@@ -58,6 +59,7 @@ function PainelLogin() {
           type="password" 
           id="senha" 
           name="senha" 
+          placeholder='Senha'
           value={senha}
           onChange={(e) => setSenha(e.target.value)}
           required

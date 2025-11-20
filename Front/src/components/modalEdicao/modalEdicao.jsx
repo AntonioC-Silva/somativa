@@ -156,7 +156,6 @@ function ModalEdicao({ filme, aoFechar, aoSalvar, erro, loading }) {
                             Cancelar
                         </button>
                         <button type="submit" className="botaoAcao aprovar" disabled={loading}>
-                            {/* 4. Usa o prop 'loading' */}
                             {loading ? 'Enviando...' : 'Salvar Alterações'}
                         </button>
                     </article>

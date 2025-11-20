@@ -5,6 +5,7 @@ import os
 import re
 from urllib.parse import urlparse, parse_qs
 from decimal import Decimal
+from datetime import datetime, date, timedelta
 import autenticacao
 import filmes
 import banco
@@ -17,6 +18,10 @@ class ConversorJsonCustomizado(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, Decimal):
             return float(obj)
+        if isinstance(obj, (datetime, date)):
+            return obj.isoformat()
+        if isinstance(obj, timedelta):
+            return str(obj)
         return super(ConversorJsonCustomizado, self).default(obj)
 
 class ManipuladorDeRequisicoes(http.server.SimpleHTTPRequestHandler):
@@ -256,11 +261,7 @@ class ManipuladorDeRequisicoes(http.server.SimpleHTTPRequestHandler):
 if __name__ == "__main__":
     if not os.path.exists(pasta_front):
         os.makedirs(pasta_front)
-        print(f"nota: pasta '{pasta_front}' verificada")
-
     print(f"servidor rodando python puro em http://localhost:{porta}")
-
-    
     socketserver.TCPServer.allow_reuse_address = True
     
     with socketserver.TCPServer(("", porta), ManipuladorDeRequisicoes) as httpd:

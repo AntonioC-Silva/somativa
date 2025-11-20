@@ -22,11 +22,8 @@
 .heroConteudo .logo-gradient {
     font-family: 'Iceland', Arial, Helvetica, sans-serif;
     font-weight: bold;
-    background-image: linear-gradient(to right, #0C38C9, #8D0B99); 
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
+    background-image: white; 
+
 }
 
 .subtituloHero {
@@ -49,11 +46,8 @@
     text-align: center;
     margin-top: 0;
     margin-bottom: 3rem;
-    background-image: linear-gradient(to right, #0C38C9, #CD39E7);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    -webkit-text-fill-color: transparent;
+    background-image: white;
+
 }
 
 

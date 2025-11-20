@@ -71,8 +71,7 @@ function CadastroFilme() {
   const [tipoUsuario, setTipoUsuario] = useState(null);
   const navegar = useNavigate();
 
-
-  const is_admin = tipoUsuario === 'adm';
+  const isAdmin = tipoUsuario === 'adm';
 
   useEffect(() => {
     const tipo = localStorage.getItem('tipo_usuario');
@@ -92,7 +91,7 @@ function CadastroFilme() {
     navegar('/');
   };
 
-  const getAuthHeaders = () => {
+  const obterCabecalhosAuth = () => {
       const token = localStorage.getItem('token_jwt');
       return {
           'Content-Type': 'application/json',
@@ -129,20 +128,18 @@ function CadastroFilme() {
       sinopse: sinopse,
     };
 
-
-    const url = is_admin
+    const url = isAdmin
       ? 'http://localhost:8000/api/filme/admin-add' 
       : 'http://localhost:8000/api/filmes'; 
 
-    const headers = is_admin
-      ? getAuthHeaders()
+    const headers = isAdmin
+      ? obterCabecalhosAuth()
       : { 'Content-Type': 'application/json' };
 
-    const mensagemSucesso = is_admin
+    const mensagemSucesso = isAdmin
       ? 'Filme cadastrado com sucesso no catálogo!'
       : 'Filme enviado para aprovação!';
  
-
     try {
       const resposta = await fetch(url, { 
         method: 'POST',
@@ -183,7 +180,7 @@ function CadastroFilme() {
         <fieldset className="grupoCampos" disabled={loading}>
      
           <legend className="tituloFormulario">
-            {is_admin ? 'Cadastrar Novo Filme (Admin)' : 'Sugerir Novo Filme'}
+            {isAdmin ? 'Cadastrar Novo Filme' : 'Sugerir Novo Filme'}
           </legend>
 
           <section className="containerGrid">
@@ -211,7 +208,7 @@ function CadastroFilme() {
               />
               <label htmlFor="duracao" className="rotulo">Duração (HH:MM:SS):</label>
               <input 
-                type="time" 
+                type="text" 
                 id="duracao" 
                 className="campo"
                 step="1"
@@ -310,9 +307,8 @@ function CadastroFilme() {
             </article>
           )}
 
-      
           <button type="submit" className="botaoEnvio" disabled={loading}>
-            {loading ? 'Enviando...' : (is_admin ? 'Cadastrar Filme no Catálogo' : 'Enviar Pedido de Cadastro')}
+            {loading ? 'Enviando...' : (isAdmin ? 'Cadastrar Filme no Catálogo' : 'Enviar Pedido de Cadastro')}
           </button>
         </fieldset>
       </form>

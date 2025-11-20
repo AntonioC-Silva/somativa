@@ -57,7 +57,7 @@
 
 .detalheAno {
     font-size: 1.5rem;
-    color: #aaa;
+    color: #B1A9A9;
     margin-bottom: 1.5rem;
     display: block;
 }
@@ -78,7 +78,7 @@
 .detalheGeneros,
 .detalheDuracao {
     font-size: 1rem;
-    color: #ccc;
+    color: #B1A9A9;
     line-height: 1.6;
     margin: 0;
 }
@@ -99,7 +99,7 @@
     font-family: Arial, sans-serif;
     font-size: 1rem;
     font-weight: bold;
-    color: #fff;
+    color: #000;
     border: none;
     border-radius: 20px;
     padding: 10px 25px;
@@ -115,10 +115,10 @@
 }
 
 .botaoAcaoDetalhe.voltar {
-    background-color: #555;
+    background-color: #B1A9A9;
 }
 .botaoAcaoDetalhe.voltar:hover {
-    background-color: #777;
+    opacity: 0.2;
 }
 
 .botaoAcaoDetalhe.editar {
