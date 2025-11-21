@@ -54,7 +54,7 @@ No terminal do VS Code (certifique-se de estar na raiz do projeto), execute os c
    
 ### 4. Executando o Frontend
 
- Servidor rodando Agora vamos para o Front, na lateral direita na parte de cima do terminal click no mais para abrir outro terminal.
+ Servidor rodando Agora vamos para o Front, na lateral direita na parte de cima do terminal clique no mais para abrir outro terminal.
  Nesse terminal iremos executar os seguintes comandos:
 
  1. Entre na pasta do Front:
