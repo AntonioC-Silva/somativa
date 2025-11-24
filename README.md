@@ -4,16 +4,6 @@
 
 ---
 
-## Pré-requisitos
-
-Antes de começar, certifique-se de ter instalado em sua máquina:
-* [Node.js](https://nodejs.org/) (Versão 18 ou superior)
-* [Python](https://www.python.org/) (Versão 3.10 ou superior)
-* [MySQL Server](https://dev.mysql.com/downloads/installer/)
-* [VS Code](https://code.visualstudio.com/) (Editor de código recomendado)
-
----
-
 ## Passo a Passo para Instalação e Execução
 
 ### 1. Abrindo o Projeto no VS Code
