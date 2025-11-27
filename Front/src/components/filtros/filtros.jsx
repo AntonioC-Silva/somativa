@@ -7,7 +7,7 @@ const generosDisponiveis = [
 ];
 
 function Filtros({ valoresIniciais, aoAtualizarFiltros }) {
-    
+    //ve qual filtro ta aberto
     const [filtroAberto, setFiltroAberto] = useState(null);
 
     const [tempAno, setTempAno] = useState(valoresIniciais.ano || '');
@@ -41,6 +41,7 @@ function Filtros({ valoresIniciais, aoAtualizarFiltros }) {
         }
     };
 
+    // depois do ok aplica o filtro
     const lidarAplicarFiltro = (nomeFiltro) => {
         const novosFiltros = { ...valoresIniciais };
 
@@ -56,7 +57,7 @@ function Filtros({ valoresIniciais, aoAtualizarFiltros }) {
         setFiltroAberto(null); 
     };
 
-
+    //checkbox
     const lidarMudancaGenero = (e) => {
         const { value, checked } = e.target;
         let novosGeneros;
@@ -68,6 +69,7 @@ function Filtros({ valoresIniciais, aoAtualizarFiltros }) {
         }
 
         setGenerosSel(novosGeneros);
+        //atualizar sem precisar do ok
         aoAtualizarFiltros({ ...valoresIniciais, genero: novosGeneros.join(',') });
     };
 

@@ -15,6 +15,7 @@ function PainelLogin() {
     setErro('');
 
     try {
+      // bate na api pra tentar logar
       const resposta = await fetch('http://localhost:8000/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -24,6 +25,7 @@ function PainelLogin() {
       const dados = await resposta.json();
 
       if (resposta.ok && dados.sucesso) {
+        // se deu bom, salva os dados no navegador pra usar depois
         localStorage.setItem('sessao_usuario', JSON.stringify(dados.usuario));
         localStorage.setItem('tipo_usuario', dados.tipo); 
         localStorage.setItem('token_jwt', dados.token); 

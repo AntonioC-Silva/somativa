@@ -8,14 +8,17 @@ function NavBar({ tipoUsuario, aoSair }) {
     const [termoBusca, setTermoBusca] = useState('');
     const navegar = useNavigate();
 
+    // muda a cor do icone se for adm ou usuario normal
     const classeIcone = tipoUsuario === 'adm' ? 'icon-adm' : 'icon-comum';
 
+    // chama a funcao de logout
     const lidarComLogout = (evento) => {
         evento.preventDefault(); 
         aoSair(evento);          
         setMenuAberto(false);    
     };
 
+    // manda pra pagina de catalogo 
     const lidarSubmitBusca = (evento) => {
         evento.preventDefault();
         if (termoBusca.trim()) {
@@ -28,20 +31,21 @@ function NavBar({ tipoUsuario, aoSair }) {
             
             <Link to="/home" className="logoNav">lixs</Link>
 
+            {/* barra de pesquisa  */}
             <form className="campoBusca" onSubmit={lidarSubmitBusca}>
                 <input 
                     type='search' 
                     placeholder='Buscar...' 
-                    aria-label="Campo de busca"
                     value={termoBusca}
                     onChange={(e) => setTermoBusca(e.target.value)}
                 />
-                <button type="submit" className="iconeBusca" aria-label="Buscar">
-                    <span className="bi bi-search" aria-hidden="true"></span>
+                <button type="submit" className="iconeBusca">
+                    <span className="bi bi-search"></span>
                 </button>
             </form>
 
-            <nav className="menuNav" aria-label="Navegação principal">
+            {/* links principais */}
+            <nav className="menuNav">
                 <ul>
                     <li><Link to="/home">Início</Link></li>
                     <li><Link to="/sobre">Sobre Nós</Link></li>
@@ -49,38 +53,23 @@ function NavBar({ tipoUsuario, aoSair }) {
                 </ul>
             </nav>
 
+            {/* menu dropdown  */}
             {tipoUsuario && (
-                <nav className="menuUsuario" aria-label="Menu do usuário">
-                    
+                <nav className="menuUsuario">
                     <button 
-                        type="button"
                         className={`botaoMenuUsuario ${classeIcone}`}
                         onClick={() => setMenuAberto(!menuAberto)}
-                        aria-expanded={menuAberto}
-                        aria-controls="dropdown-usuario"
-                        aria-label="Abrir menu do usuário"
                     >
-                        <span className="bi bi-person-circle" aria-hidden="true"></span>
+                        <span className="bi bi-person-circle"></span>
                     </button>
                     
-                    <ul 
-                        id="dropdown-usuario" 
-                        className={`dropdownConteudo ${menuAberto ? 'aberto' : ''}`}
-                        role="menu"
-                    >
+                    <ul className={`dropdownConteudo ${menuAberto ? 'aberto' : ''}`}>
+                        {/* opcao so de adm */}
                         {tipoUsuario === 'adm' && (
-                            <li role="none">
-                                <Link to="/gerenciarFilmes" role="menuitem">Gerenciar Filmes</Link>
-                            </li>
+                            <li><Link to="/gerenciarFilmes">Gerenciar Filmes</Link></li>
                         )}
-                        
-                        <li role="none">
-                            <Link to="/adicionarFilmes" role="menuitem">Adicionar Filme</Link>
-                        </li>
-                        
-                        <li role="none">
-                            <Link to="/" onClick={lidarComLogout} role="menuitem">Sair</Link>
-                        </li>
+                        <li><Link to="/adicionarFilmes">Adicionar Filme</Link></li>
+                        <li><Link to="/" onClick={lidarComLogout}>Sair</Link></li>
                     </ul>
                 </nav>
             )}

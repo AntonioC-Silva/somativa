@@ -13,12 +13,12 @@ function PainelCadastro() {
   const lidarComEnvio = async (evento) => {
     evento.preventDefault();
     setErro(''); 
-
+    //validação se as senhas são iguais
     if (senha !== confirmarSenha) {
       setErro('As senhas não são iguais.');
       return; 
     }
-
+    //regex para gararantir (letra maiuscula, minuscula, numero, caracter especial e no minimo 8 caracteres)
     const regexSenha = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*-]).{8,}$/;
     if (!regexSenha.test(senha)) {
       setErro('Senha: 8+ chars, maiúscula, minúscula, número e especial.');
@@ -27,6 +27,7 @@ function PainelCadastro() {
 
     setLoading(true);
     try {
+      //manda no back pra criar o usuario
       const resposta = await fetch('http://localhost:8000/api/registro', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

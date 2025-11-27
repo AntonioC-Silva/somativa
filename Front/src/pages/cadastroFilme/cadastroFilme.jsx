@@ -74,6 +74,7 @@ function CadastroFilme() {
   const isAdmin = tipoUsuario === 'adm';
 
   useEffect(() => {
+    // ve se ta logado
     const tipo = localStorage.getItem('tipo_usuario');
     if (!tipo) {
         navegar('/');
@@ -104,6 +105,7 @@ function CadastroFilme() {
     setLoading(true);
     setMensagem('');
 
+    //convertendo a hora para seg pro banco
     const [horas = '0', minutos = '0', segundos = '0'] = duracao.split(':');
     const totalSegundos = (parseInt(horas, 10) * 3600) +
                          (parseInt(minutos, 10) * 60) +
@@ -128,6 +130,7 @@ function CadastroFilme() {
       sinopse: sinopse,
     };
 
+    //difereciação de caminho dependendo do usuario
     const url = isAdmin
       ? 'http://localhost:8000/api/filme/admin-add' 
       : 'http://localhost:8000/api/filmes'; 

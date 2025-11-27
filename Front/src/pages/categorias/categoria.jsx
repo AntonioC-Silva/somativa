@@ -15,6 +15,7 @@ function PaginaCategoria(){
     const navegar = useNavigate();
     const location = useLocation();
 
+    // pega os parametros da url
     const params = useMemo(() => new URLSearchParams(location.search), [location.search]);
     const termoQuery = params.get('q') || '';
     const generoQuery = params.get('genero') || '';
@@ -65,7 +66,7 @@ function PaginaCategoria(){
             );
         }
         
- 
+        // genero
         if (generoQuery) {
             const generosParaFiltrar = generoQuery.toLowerCase().split(',').filter(Boolean).map(g => g.trim());
             
@@ -81,18 +82,20 @@ function PaginaCategoria(){
             }
         }
    
-
+        //filtrar por ano
         if (anoQuery) {
             filmesTemp = filmesTemp.filter(f => 
                 f.ano.toString() === anoQuery
             );
         }
+        //filtrar por diretor
         if (diretorQuery) {
             filmesTemp = filmesTemp.filter(f => {
                 const nomeCompleto = `${f.diretor_nome || ''} ${f.diretor_sobrenome || ''}`.toLowerCase();
                 return nomeCompleto.includes(diretorQuery.toLowerCase());
             });
         }
+        //filtrar por ator
         if (atorQuery) {
             filmesTemp = filmesTemp.filter(f => 
                 f.elenco && f.elenco.toLowerCase().includes(atorQuery.toLowerCase())

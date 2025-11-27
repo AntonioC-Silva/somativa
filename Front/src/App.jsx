@@ -14,6 +14,7 @@ import PaginaDetalheFilme from './pages/detalhe/detalheFilme.jsx'
 function App() {
   
   return (
+    //rotas e qual componente vai chamar
     <Routes>
       <Route path="/" element={<PaginaLogin />} />
       <Route path="/cadastro" element={<PaginaCadastro />} />

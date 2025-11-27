@@ -21,6 +21,7 @@ function PaginaGerenciarFilmes() {
     const [filmeEditando, setFilmeEditando] = useState(null);
     const [erroModal, setErroModal] = useState(null);
 
+    //pegar tokem e botar no header
     const getAuthHeaders = () => {
         const token = localStorage.getItem('token_jwt');
         return {
@@ -30,6 +31,7 @@ function PaginaGerenciarFilmes() {
     };
 
     const carregarDados = useCallback(async () => {
+        //pega tudo filmes pendentes e aprovados e ediçoes pendentes
         setLoading(true);
         setErro(null);
         try {
@@ -91,11 +93,12 @@ function PaginaGerenciarFilmes() {
     const lidarComRecusar = async (id) => {
         if (!window.confirm('Tem certeza que deseja recusar este filme?')) return;
         try {
+            //deleta o filme da tabela de pendentes
             await fetch(`http://localhost:8000/api/filme-pendente/recusar/${id}`, { 
                 method: 'DELETE',
                 headers: getAuthHeaders()
             });
-            carregarDados();
+            carregarDados();//recarrega a pagina
         } catch (err) {
             setErro('Falha ao recusar filme.');
         }
@@ -103,6 +106,7 @@ function PaginaGerenciarFilmes() {
 
     const lidarComAprovar = async (id) => {
         try {
+            //tira o filme de pendentes e manda pra tabela de filmes oficial
             await fetch(`http://localhost:8000/api/filme/aprovar/${id}`, { 
                 method: 'POST',
                 headers: getAuthHeaders()

@@ -7,6 +7,7 @@ import "./home.css"
 import ListaFilmes from '../../components/listaFilme/listaFilmes';
 
 function PaginaHome() {
+    //estados pra guardar as listas dos filmes
     const [filmesParaCarrossel, setFilmesParaCarrossel] = useState([]);
     const [outrosFilmes, setOutrosFilmes] = useState([]);
     const [filmesAcao, setFilmesAcao] = useState([]);
@@ -20,6 +21,7 @@ function PaginaHome() {
     const IDS_CARROSSEL = [1, 2, 7]; 
 
     useEffect(() => {
+        //ve se ta logado se n manda pro login
         const tipo = localStorage.getItem('tipo_usuario');
         if (!tipo) {
             navegar('/'); 
@@ -32,6 +34,7 @@ function PaginaHome() {
             setErro(null);
             try {
                 const [respDestaques, respAcao, respSciFi] = await Promise.all([
+                    //busca tudo de uma vez
                     fetch('http://localhost:8000/api/filmes'),
                     fetch('http://localhost:8000/api/filmes/genero/Ação'),
                     fetch('http://localhost:8000/api/filmes/genero/Ficção Científica')
@@ -59,6 +62,7 @@ function PaginaHome() {
                     const filmesCarrossel = [];
                     const filmesRestantes = [];
 
+                    // separa oq vai pro carrossel e oq fica na lista normal
                     todosOsFilmes.forEach(filme => {
                         if (IDS_CARROSSEL.includes(filme.id)) {
                             filmesCarrossel.push(filme);
@@ -98,7 +102,7 @@ function PaginaHome() {
             carregarFilmes();
         }
     }, [navegar]);
-
+    //apaga o localstorage e manda pro login
     const lidarComLogout = (evento) => {
         evento.preventDefault();
         localStorage.removeItem('sessao_usuario');
