@@ -60,6 +60,6 @@ No terminal do VS Code (certifique-se de estar na raiz do projeto), execute os c
 
 ### 5. Credenciais
 1. Se quiser logar como usuário comum fique a vontade para criar sua conta na tela de cadastro.
-2. Para logar Como administrador use Usuário: "mary" Senha: "Mary@1711" 
+2. Para logar Como administrador use Usuário: `mary` Senha: `Mary@1711` 
  
    
